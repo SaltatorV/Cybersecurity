@@ -1,7 +1,10 @@
 import React from 'react';
+
 import './App.css';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 
-
+import Login from './components/Login';
+import NavBarApp from './NavBarApp';
 
 class App extends React.Component{
   state = {
@@ -17,9 +20,16 @@ class App extends React.Component{
     
       
       return(
-        <div>
-          <h1>Dziala jest ok</h1>
-        </div>
+        <>
+          <Router>
+          <NavBarApp />
+          <Routes>
+            <Route path="/Login" element={<Login></Login>}></Route>
+          </Routes>
+
+          
+        </Router>
+        </>
       )
     
   }
