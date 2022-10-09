@@ -1,0 +1,222 @@
+{
+	"info": {
+		"_postman_id": "8d393dc4-44cd-4e55-87fb-5a0bfd21c3c4",
+		"name": "Products",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18110652"
+	},
+	"item": [
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Account Get Admin",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiVG9tZWsiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTY1MzMzMjE4MCwiaXNzIjoidGVzdCJ9.5uP6jVmrL7khPoGyr2pBJwuqhe0miNTtIFJ7mhjia48",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:5157/Account/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5157",
+									"path": [
+										"Account",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Account Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Login\": \"Tomek\",\r\n     \"Password\": \"1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5157/Account",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5157",
+							"path": [
+								"Account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Account",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTY1MzMyNzE2NSwiaXNzIjoidGVzdCJ9.sQNExOrRCkVXFq-B7HRrWCEUt8b4TmRUQPwhuCCn-pY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Login\": \"User6\",\r\n     \"Password\": \"user\",\r\n     \"Role\": \"User\"\r\n     \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5157/Account/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5157",
+							"path": [
+								"Account",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5157/Products/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5157",
+					"path": [
+						"Products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Product Post",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE2NTMzMzI3MzgsImlzcyI6InRlc3QifQ.kUyioYylDLD5HmheALCoGuswvuNKnPE4rVrayHde3O8",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\":\"8229eaa2-383d-4c23-abbb-ad4e52d6e841\",\r\n    \"name\":\"test1\",\r\n    \"isAvailable\":true,\r\n    \"email\":\"test1@wp.pl\",\r\n    \"Telefon\":\"531234531\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5157/Products/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5157",
+					"path": [
+						"Products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Product by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5157/Products/b9c3d0fa-923e-4363-99f4-110aa7e18d65",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5157",
+					"path": [
+						"Products",
+						"b9c3d0fa-923e-4363-99f4-110aa7e18d65"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
