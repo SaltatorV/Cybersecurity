@@ -2,7 +2,7 @@
 
 ## Zadanie do zrealiwoania ##
 
-Napisz program, który implementuje następujące zasady dla systemu bezpieczeństwa:
+### I. Napisz program, który implementuje następujące zasady dla systemu bezpieczeństwa: ###
 
 1. Program powinien zapewniać pracę w dwóch rolach: administratora (użytkownik o stałej nazwie ADMIN) oraz zwykłego użytkownika.
 
@@ -36,7 +36,7 @@ Napisz program, który implementuje następujące zasady dla systemu bezpieczeń
 
 7. Należystosować bezpieczny algorytm hashujący do przechowywania haseł.
 
-## II. Zadania indywidualne
+### II. Zadania indywidualne ###
 
 Ograniczenia dotyczące haseł użytkowników:
  
