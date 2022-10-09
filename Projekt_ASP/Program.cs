@@ -1,10 +1,8 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Projekt_ASP.Controllers;
 using Projekt_ASP.DTO.Validator;
 using Projekt_ASP.Interfaces;
-using Projekt_ASP.Middlwares;
 using Projekt_ASP.Repository;
 using Projekt_ASP.Service;
 using System.Text;
@@ -24,8 +22,7 @@ builder.Services.AddCors(options =>
 });
 
 services.AddControllers()
-                .AddFluentValidation( x =>x.RegisterValidatorsFromAssemblyContaining<TestUserDtoValidator>())
-                .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<UpdateProductDtoValidator>());
+                .AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<TestUserDtoValidator>());
 
 services.AddEndpointsApiExplorer();
 services.AddAuthentication();
@@ -51,7 +48,6 @@ services.AddAuthentication(opt =>
 
 
 
-services.AddSingleton<IProductsRepository, ProductsInMemoryReposiotry>();
 services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 services.AddScoped<IUserRepository, UserRepository>();
 services.AddScoped<IUserService, UserService>();
@@ -60,9 +56,7 @@ services.AddScoped<IUserService, UserService>();
 
 
 var provider = services.BuildServiceProvider();
-var controller = provider.GetService<ProductsController>();
-var controller2 = provider.GetService<ProductsController>();
-var controller3 = provider.GetService<ProductsController>();
+
 
 
 var app = builder.Build();

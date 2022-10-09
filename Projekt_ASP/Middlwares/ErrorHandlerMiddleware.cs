@@ -1,5 +1,4 @@
-﻿using Projekt_ASP.Extensions;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace Projekt_ASP.Middlwares
 {
@@ -16,10 +15,6 @@ namespace Projekt_ASP.Middlwares
             try
             {
                 await _next(httpContext);
-            }
-            catch (ProductsAlreadyExistsException e)
-            {
-                httpContext.Response.StatusCode = StatusCodes.Status402PaymentRequired;
             }
             catch(System.Exception)
             {
