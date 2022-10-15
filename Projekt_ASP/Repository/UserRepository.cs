@@ -1,4 +1,5 @@
 ﻿using Projekt_ASP.Data;
+using Projekt_ASP.DTO;
 using Projekt_ASP.Interfaces;
 
 namespace Projekt_ASP.Repository
@@ -46,5 +47,13 @@ namespace Projekt_ASP.Repository
             await Task.CompletedTask;
         }
 
+        public async Task ChangePassword(ChangePassword change)
+        {
+            var user = _users.SingleOrDefault(x=>x.Login == change.Login);
+            user.Password = change.Password;
+
+            await Task.CompletedTask;
+
+        }
     }
 }

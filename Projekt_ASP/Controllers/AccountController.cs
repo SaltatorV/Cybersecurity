@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Projekt_ASP.Data;
+using Projekt_ASP.DTO;
 using Projekt_ASP.Interfaces;
+using System.Net;
 
 namespace Projekt_ASP.Controllers
 {
@@ -33,6 +35,13 @@ namespace Projekt_ASP.Controllers
         public async Task<IActionResult> Post(Login user)
         {
             return Ok(await _userService.LoginAsync(user.login, user.password));
+        }
+
+        [HttpPost("ChangePassword")]
+        public async Task<IActionResult> Post(ChangePassword user)
+        {
+            await _userService.ChangePassword(user);
+            return Ok(HttpStatusCode.OK);
         }
 
         [HttpPost("register")]

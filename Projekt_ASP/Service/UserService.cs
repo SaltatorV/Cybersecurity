@@ -1,4 +1,5 @@
 ﻿using Projekt_ASP.Data;
+using Projekt_ASP.DTO;
 using Projekt_ASP.Interfaces;
 
 namespace Projekt_ASP.Service
@@ -14,12 +15,19 @@ namespace Projekt_ASP.Service
             _jwtHandler = jwtHandler;
         }
 
+        public async Task ChangePassword(ChangePassword user)
+        {
+            _userRepository.ChangePassword(user);
+            await Task.CompletedTask;
+        }
+
         public async Task<List<User>> GetAllUser()
         {
             var collection = await _userRepository.GetAll();
             return collection;
             
         }
+
 
         public async Task<Token> LoginAsync(string login, string password)
         {

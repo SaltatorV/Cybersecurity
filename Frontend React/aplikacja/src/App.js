@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 
 import Login from './components/Login';
 import NavBarApp from './NavBarApp';
+import DaneKonta from './components/DaneKonta'
 
 class App extends React.Component{
   state = {
@@ -13,6 +14,22 @@ class App extends React.Component{
     ]
   }
 
+  onUserToken(tokenUser) {
+
+
+    console.log("User token drag.");
+
+    if (tokenUser.length > 3) {
+
+      this.setState({ token: tokenUser })
+
+    }
+    else {
+
+      alert("Blad token");
+    }
+
+  }
 
 
   render()
@@ -24,7 +41,8 @@ class App extends React.Component{
           <Router>
           <NavBarApp />
           <Routes>
-            <Route path="/Login" element={<Login></Login>}></Route>
+            <Route path="/Login" element={<Login onUserLogin={this.onUserLogin.bind(this)} onUserToken={this.onUserToken.bind(this)}></Login>}></Route>
+            <Route path="/DaneKonta" element={<DaneKonta ></DaneKonta>}></Route>
           </Routes>
 
           
