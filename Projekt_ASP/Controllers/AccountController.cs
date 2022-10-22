@@ -26,6 +26,7 @@ namespace Projekt_ASP.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> GetAll()
         {
+
             var collection = await _userService.GetAllUser();
             return Ok(collection);
         }
@@ -34,14 +35,34 @@ namespace Projekt_ASP.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Login user)
         {
-            return Ok(await _userService.LoginAsync(user.login, user.password));
+
+            try
+            {
+                return Ok(await _userService.LoginAsync(user.login, user.password));
+            }
+            catch (Exception)
+            {
+
+                return Ok(HttpStatusCode.BadRequest);
+            }
         }
 
         [HttpPost("ChangePassword")]
-        public async Task<IActionResult> Post(ChangePassword user)
+        public async Task<IActionResult> Post([FromBody] ChangePassword user)
         {
-            await _userService.ChangePassword(user);
-            return Ok(HttpStatusCode.OK);
+            try
+            {
+                await _userService.ChangePassword(user);
+                return Ok(HttpStatusCode.OK);
+            }
+            catch (Exception )
+            {
+                
+                return Ok(HttpStatusCode.BadRequest);
+            }
+            
+
+            
         }
 
         [HttpPost("register")]
@@ -49,6 +70,37 @@ namespace Projekt_ASP.Controllers
         {
             await _userService.RegisterAsync(user.Login, user.Password, user.Role);
             return Ok();
+        }
+
+        [HttpPost("tokenAuth")]
+        public async Task<IActionResult> Post([FromBody] TokenAuthDto token)
+        {
+            try
+            {
+                return Ok(await _userService.GetAccountByToken(token.Token));
+            }
+            catch (Exception)
+            {
+
+                return Ok(HttpStatusCode.BadRequest);
+            }
+            
+        }
+
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> Post([FromBody] CreateUserDto user)
+        {
+            try
+            {
+                await _userService.GetCreateUser(user);
+                return Ok(HttpStatusCode.OK);
+            }
+            catch (Exception)
+            {
+
+                return Ok(HttpStatusCode.BadRequest);
+            }
+
         }
 
     }

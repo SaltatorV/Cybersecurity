@@ -3,6 +3,7 @@
     public class ChangePassword
     {
         public string Login { get; set; }
-        public string Password { get; set; }
+        public string NewPassword { get; set; }
+        public string OldPassword { get; set; }
     }
 }

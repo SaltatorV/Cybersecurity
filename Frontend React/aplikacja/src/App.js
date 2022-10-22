@@ -6,28 +6,17 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Login from './components/Login';
 import NavBarApp from './NavBarApp';
 import DaneKonta from './components/DaneKonta'
+import AddUser from './components/AddUser';
 
 class App extends React.Component{
   state = {
-    elements: [
-   
-    ]
+    token:''
   }
 
-  onUserToken(tokenUser) {
+  onUserLogin(tokenUser) {
 
-
-    console.log("User token drag.");
-
-    if (tokenUser.length > 3) {
-
-      this.setState({ token: tokenUser })
-
-    }
-    else {
-
-      alert("Blad token");
-    }
+  this.setState({token:tokenUser})
+  alert("Zalogowano")
 
   }
 
@@ -41,8 +30,9 @@ class App extends React.Component{
           <Router>
           <NavBarApp />
           <Routes>
-            <Route path="/Login" element={<Login onUserLogin={this.onUserLogin.bind(this)} onUserToken={this.onUserToken.bind(this)}></Login>}></Route>
-            <Route path="/DaneKonta" element={<DaneKonta ></DaneKonta>}></Route>
+            <Route path="/Login" element={<Login onUserLogin={this.onUserLogin.bind(this)}></Login>}></Route>
+            <Route path="/DaneKonta" element={<DaneKonta token={this.state.token}></DaneKonta>}></Route>
+            <Route path="/AddUser" element={<AddUser></AddUser>}></Route>
           </Routes>
 
           

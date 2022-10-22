@@ -1,12 +1,12 @@
 import { Button } from 'react-bootstrap'
 import React, { useState } from 'react'
 import { Form } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 function Login(props) {
   
   const [formData,setfromData] = useState([])
-  const [token,setToken] = useState();
-
+  
   const handleChange = (e) => {
     setfromData({
       ...formData,
@@ -41,12 +41,8 @@ function Login(props) {
       .then(resFromServer => {
 
         console.log(resFromServer)
-        setToken(resFromServer);
-        var userStr = JSON.stringify(resFromServer);
-        var a = userStr.length - 2;
-        var tokenUser = userStr.slice(10, a);
-        props.onUserToken(tokenUser);
-
+        if(resFromServer.token !== undefined){props.onUserLogin(resFromServer.token);}
+        else if(resFromServer === 400){alert("Bad password or login");}
         
       })
       .catch((error) => {
@@ -58,6 +54,7 @@ function Login(props) {
 
   return (
     <div>
+      
 <Form>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
@@ -69,9 +66,11 @@ function Login(props) {
         <Form.Control type="password" placeholder="Password" value={formData.password} name={"password"} onChange={handleChange}/>
       </Form.Group>
       
+      
       <Button variant="primary" type="submit" onClick={handleSubmit}>
         Submit
       </Button>
+      
     </Form>
 
     </div>

@@ -1,4 +1,5 @@
-﻿using Projekt_ASP.Data;
+﻿using Projekt_ASP.Controllers;
+using Projekt_ASP.Data;
 using Projekt_ASP.DTO;
 using Projekt_ASP.Interfaces;
 
@@ -6,8 +7,8 @@ namespace Projekt_ASP.Repository
 {
     public class UserRepository : IUserRepository
     {
-        
-       
+
+
         private static List<User> _users = new List<User>() { new User("Admin","admin","Admin"),
         new User("User","user","User"),
         new User("User2","user2","User"),
@@ -24,14 +25,15 @@ namespace Projekt_ASP.Repository
         {
             return await Task.FromResult(_users);
         }
-        public async Task AddAsync(User user)
+        public async Task AddAsync(CreateUserDto user)
         {
             var userExists = _users.SingleOrDefault(x => x.Login == user.Login);
-            if(userExists != null)
+            if (userExists != null)
             {
                 throw new Exception("Login jest zajety");
             }
-            _users.Add(user);
+            var userUser = new User(user.Login, user.NewPassword,user.Role);
+            _users.Add(userUser);
             await Task.CompletedTask;
         }
 
@@ -49,10 +51,20 @@ namespace Projekt_ASP.Repository
 
         public async Task ChangePassword(ChangePassword change)
         {
-            var user = _users.SingleOrDefault(x=>x.Login == change.Login);
-            user.Password = change.Password;
+            var user = _users.SingleOrDefault(x => x.Login == change.Login);
 
-            await Task.CompletedTask;
+            if (user.Password == change.OldPassword)
+            {
+                user.Password = change.NewPassword;
+
+                await Task.CompletedTask;
+            }
+            else
+            {
+                throw new Exception("Bad old password!");
+                
+            }
+
 
         }
     }

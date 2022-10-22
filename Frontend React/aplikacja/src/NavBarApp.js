@@ -13,6 +13,7 @@ function NavBarApp() {
       <Nav className="me-auto">
         <Nav.Link as={Link} to={"/Login"} href="Login">Login</Nav.Link>
         <Nav.Link as={Link} to={"/DaneKonta"} href="DaneKonta">Dane Konta</Nav.Link>
+        <Nav.Link as={Link} to={"/AddUser"} href="AddUser">Add Users</Nav.Link>
         </Nav>
         </Container>
       </Navbar>
