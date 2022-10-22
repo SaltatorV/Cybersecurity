@@ -1,5 +1,8 @@
-﻿using Projekt_ASP.Data;
+﻿using Projekt_ASP.Controllers;
+using Projekt_ASP.Data;
+using Projekt_ASP.DTO;
 using Projekt_ASP.Interfaces;
+using WebApi.Models.DTO;
 
 namespace Projekt_ASP.Service
 {
@@ -14,20 +17,45 @@ namespace Projekt_ASP.Service
             _jwtHandler = jwtHandler;
         }
 
+        public async Task ChangePassword(ChangePassword user)
+        {
+            await _userRepository.ChangePassword(user);
+
+        }
+
+        public Task<TokenObjectDto> GetAccountByToken(string token)
+        {
+            if (String.IsNullOrEmpty(token))
+            {
+                throw new Exception("Token is bad!");
+            }
+            var tokenObject = _jwtHandler.Decode(token);
+            return tokenObject;
+
+        }
+
         public async Task<List<User>> GetAllUser()
         {
             var collection = await _userRepository.GetAll();
             return collection;
+
+        }
+
+        public async Task GetCreateUser(CreateUserDto user)
+        {
+            await _userRepository.AddAsync(user);
             
         }
 
         public async Task<Token> LoginAsync(string login, string password)
         {
             var userLogin = await _userRepository.GetAsync(login);
-            if(userLogin.Password != password)
+            if (userLogin.Password != password)
             {
                 throw new Exception("Password is bad");
+
             }
+
 
             var jwt = _jwtHandler.Generate(userLogin.Login, userLogin.Role);
 
@@ -35,11 +63,16 @@ namespace Projekt_ASP.Service
             return jwt;
         }
 
-        public async Task RegisterAsync(string login, string password,string role)
+        public async Task RegisterAsync(CreateUserDto user)
         {
 
-            var user = new User(login, password,role);
+
             await _userRepository.AddAsync(user);
+        }
+
+        public Task RegisterAsync(string Login, string Paswword, string role)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,20 +1,13 @@
 import { Button } from 'react-bootstrap'
 import React, { useState } from 'react'
 import { Form } from 'react-bootstrap'
-import {Link} from 'react-router-dom'
-import ZmianaHasla from './ZmianaHasla';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 
-function Login() {
-  const initialData = Object.freeze({
-    login: 'Admin',
-    password: 'admin'
-  });
+import { Link } from 'react-router-dom'
 
-  const [formData, setfromData] = useState(initialData)
-  const [token, setToken] = useState('');
-
-
+function Login(props) {
+  
+  const [formData,setfromData] = useState([])
+  
   const handleChange = (e) => {
     setfromData({
       ...formData,
@@ -24,17 +17,16 @@ function Login() {
 
   }
 
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-  
-      const userLogin = {
-        Login: formData.login,
-        Password: formData.password
-      };
-    
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-      
+    const userLogin = {
+      Login: formData.login,
+      Password: formData.password
+    };
+    console.log(userLogin)
+
+
     const url = 'http://localhost:5157/Account/';
 
     fetch(url, {
@@ -48,12 +40,10 @@ function Login() {
 
       )
       .then(resFromServer => {
-        
-        var userStr = JSON.stringify(resFromServer);
-        var a = userStr.length - 2;
-        var tokenUser = userStr.slice(10, a);
-        setToken(tokenUser);
 
+        console.log(resFromServer)
+        if(resFromServer.token !== undefined){props.onUserLogin(resFromServer.token);}
+        else if(resFromServer === 400){alert("Bad password or login");}
         
       })
       .catch((error) => {
@@ -62,53 +52,31 @@ function Login() {
       })
 
     }
-    console.log(formData.select)
 
-    
   return (
     
     <div>
-      {(token === '')&&(
+
+      
 <Form>
-          <Form.Group className="mb-3" controlId="login">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control value={formData.login} name="login" type="text" onChange={handleChange} />
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Email address</Form.Label>
+        <Form.Control type="text" placeholder="login" value={formData.login} name={"login"} onChange={handleChange} />
+      </Form.Group>
 
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="password">
-            <Form.Label>Hasło</Form.Label>
-            <Form.Control value={formData.password} name="password" type="password" onChange={handleChange} />
-          </Form.Group>
-
-
-          <Button variant="primary" type="submit" onClick={handleSubmit}>
-            Zaloguj
-          </Button>
-</Form>
-      )}
-    {(token != '')&&(
-      <div>
-
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>Password</Form.Label>
+        <Form.Control type="password" placeholder="Password" value={formData.password} name={"password"} onChange={handleChange}/>
+      </Form.Group>
       
-
-        <Form.Select aria-label="Default select example" value={formData.select} name="select" type="text" onChange={handleChange}>
-      <option value="0">Menu</option>
-      <option value="1">Zmiana hasła</option>
-      <option value="2">Modyfikować szczegóły konta</option>
-      <option value="3">Lista użytkowników</option>
-      <option value="4">Lista użytkowników</option>
-      <option value="5">Blokowanie konta użytkowników</option>
-      <option value="6">Blokowanie ograniczenia wybranych haseł</option>
-      <option value="7">Usuwanie konta użytkowników</option>
-      <option value="8">Włączyć /wyłączyć ograniczenia haseł wybranych przez użytkownika</option>
-      <option value="9">Ustawić ważność hasła użytkownika</option>
       
-    </Form.Select>
+      <Button variant="primary" type="submit" onClick={handleSubmit}>
+        Submit
+      </Button>
+      
+    </Form>
 
-
-    
-        </div>
+   
 
     )}
     </div>
