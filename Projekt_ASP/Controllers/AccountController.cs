@@ -33,7 +33,7 @@ namespace Projekt_ASP.Controllers
         
 
         [HttpPost]
-        public async Task<IActionResult> Post(Login user)
+        public async Task<IActionResult> Post([FromBody]Login user)
         {
 
             try
