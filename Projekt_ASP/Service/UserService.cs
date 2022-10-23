@@ -23,6 +23,12 @@ namespace Projekt_ASP.Service
 
         }
 
+        public async Task DeleteUserLoginAsync(string login)
+        {
+            await _userRepository.DeleteAsync(login);
+           
+        }
+
         public Task<TokenObjectDto> GetAccountByToken(string token)
         {
             if (String.IsNullOrEmpty(token))
@@ -55,6 +61,10 @@ namespace Projekt_ASP.Service
                 throw new Exception("Password is bad");
 
             }
+            else if(userLogin.isActive == false)
+            {
+                throw new Exception("Konto zablokowane!");
+            }
 
 
             var jwt = _jwtHandler.Generate(userLogin.Login, userLogin.Role);
@@ -73,6 +83,11 @@ namespace Projekt_ASP.Service
         public Task RegisterAsync(string Login, string Paswword, string role)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task ZablokujUserAsync(string login)
+        {
+            await _userRepository.Zablokuj(login);
         }
     }
 }

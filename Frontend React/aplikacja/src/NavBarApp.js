@@ -14,6 +14,7 @@ function NavBarApp() {
         <Nav.Link as={Link} to={"/Login"} href="Login">Login</Nav.Link>
         <Nav.Link as={Link} to={"/DaneKonta"} href="DaneKonta">Dane Konta</Nav.Link>
         <Nav.Link as={Link} to={"/AddUser"} href="AddUser">Add Users</Nav.Link>
+        <Nav.Link as={Link} to={"/AllUsers"} href="AllUsers">All Users</Nav.Link>
         </Nav>
         </Container>
       </Navbar>

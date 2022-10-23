@@ -11,8 +11,9 @@ namespace Projekt_ASP.Interfaces
         public  Task<User> GetAsync(string email);
         public  Task<List<User>> GetAll();
         public  Task AddAsync(CreateUserDto user);
-        public  Task DeleteAsync(User user);
+        public  Task DeleteAsync(string user);
         public  Task UpdateAsync(User user);
+        public  Task Zablokuj(string login);
     
     }
 }

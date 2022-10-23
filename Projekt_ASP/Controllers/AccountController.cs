@@ -22,13 +22,21 @@ namespace Projekt_ASP.Controllers
 
 
        
-        [HttpGet]
+        [HttpGet("GetUsers")]
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> GetAll()
         {
+            try
+            {
+                var collection = await _userService.GetAllUser();
+                return Ok(collection);
+            }
+            catch (Exception)
+            {
 
-            var collection = await _userService.GetAllUser();
-            return Ok(collection);
+                return Ok(HttpStatusCode.BadRequest);
+            }
+            
         }
         
 
@@ -102,6 +110,38 @@ namespace Projekt_ASP.Controllers
             }
 
         }
+        [HttpDelete("deleteUser/{login}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(string login)
+        {
+            try
+            {
+                await _userService.DeleteUserLoginAsync(login);
+                return Ok(HttpStatusCode.OK);
+            }
+            catch (Exception)
+            {
+                return Ok(HttpStatusCode.BadRequest);
+
+            }
+        }
+
+        [HttpPut("zablokuj/{login}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Put(string login)
+        {
+            try
+            {
+                await _userService.ZablokujUserAsync(login);
+                return Ok(HttpStatusCode.OK);
+            }
+            catch (Exception)
+            {
+                return Ok(HttpStatusCode.BadRequest);
+
+            }
+        }
+
 
     }
 }

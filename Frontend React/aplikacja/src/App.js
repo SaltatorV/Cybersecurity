@@ -8,6 +8,7 @@ import NavBarApp from './NavBarApp';
 
 import DaneKonta from './components/DaneKonta'
 import AddUser from './components/AddUser';
+import AllUsers from './components/AllUsers';
 
 
 
@@ -36,6 +37,7 @@ class App extends React.Component{
             <Route path="/Login" element={<Login onUserLogin={this.onUserLogin.bind(this)}></Login>}></Route>
             <Route path="/DaneKonta" element={<DaneKonta token={this.state.token}></DaneKonta>}></Route>
             <Route path="/AddUser" element={<AddUser></AddUser>}></Route>
+            <Route path="/AllUsers" element={<AllUsers token={this.state.token}></AllUsers>}></Route>
 
           </Routes>
 
