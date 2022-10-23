@@ -16,7 +16,8 @@
 
 > OK - przeglądać listęużytkowników.
 
- - blokować konta użytkownikóworaz blokować ograniczenie wybranych haseł;
+> OK - blokować konta użytkowników oraz 
+ - blokować ograniczenie wybranych haseł;
 
 > OK - usuwać konta użytkowników;
 
