@@ -14,7 +14,7 @@
 
 > OK - dodawać nowych użytkowników.
 
- - przeglądać listęużytkowników.
+> OK - przeglądać listęużytkowników.
 
  - blokować konta użytkownikóworaz blokować ograniczenie wybranych haseł;
 
