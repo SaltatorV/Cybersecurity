@@ -65,6 +65,7 @@ namespace Projekt_ASP.Service
             {
                 throw new Exception("Konto zablokowane!");
             }
+            
 
 
             var jwt = _jwtHandler.Generate(userLogin.Login, userLogin.Role);
@@ -88,6 +89,10 @@ namespace Projekt_ASP.Service
         public async Task ZablokujUserAsync(string login)
         {
             await _userRepository.Zablokuj(login);
+        }
+        public async Task OdblokujUserAsync(string login)
+        {
+            await _userRepository.Odblokuj(login);
         }
     }
 }

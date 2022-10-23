@@ -142,6 +142,22 @@ namespace Projekt_ASP.Controllers
             }
         }
 
+        [HttpPut("odblokuj/{login}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Put2(string login)
+        {
+            try
+            {
+                await _userService.OdblokujUserAsync(login);
+                return Ok(HttpStatusCode.OK);
+            }
+            catch (Exception)
+            {
+                return Ok(HttpStatusCode.BadRequest);
+
+            }
+        }
+
 
     }
 }

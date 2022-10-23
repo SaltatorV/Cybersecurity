@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { Button, Table } from 'react-bootstrap'
+import { Link } from 'react-router-dom';
+import OpcjeHasel from './OpcjeHasel';
 
 function AllUsers(props) {
 
     const [usersList, setUsersList] = useState('');
-
+    const [openView,setOpenView] = useState(false);
     function getUsers() {
         const header = new Headers();
         header.set('Authorization', `Bearer ${props.token}`);
@@ -108,7 +110,42 @@ function AllUsers(props) {
 
 
     }
-   
+
+    function Odblokuj(login) {
+
+        const header = new Headers();
+        header.set('Authorization', `Bearer ${props.token}`);
+        header.set('Content-Type', 'application/json');
+
+
+
+        const url = 'http://localhost:5157/Account/odblokuj/' + login;
+
+        fetch(url, {
+            method: 'PUT',
+            headers: header
+        })
+            .then(res => res.json()
+
+            )
+            .then(resFromServer => {
+
+                console.log(resFromServer)
+                if (resFromServer === 200) {
+                    alert("Odblokowano użytkownika");
+                }
+                else if (resFromServer === 400) { alert("Bląd pobrania uzytkoników!") }
+
+            })
+            .catch((error) => {
+                console.log(error);
+                alert(error);
+            })
+
+
+
+    }
+
     return (
 
         <div>
@@ -134,14 +171,23 @@ function AllUsers(props) {
                                 <td>*******</td>
                                 <td>{user.role}</td>
                                 <td>{user.isActive.toString()}</td>
-                                <td><Button variant="warning" onClick={() => Zablokuj(user.login)}>Zablokuj</Button>
-                                <Button variant="danger" onClick={() => Delete(user.login)}>Usuń</Button></td>
+                                <td>
+                                    {(user.isActive === true) && (<Button variant="warning" onClick={() => Zablokuj(user.login)}>Zablokuj</Button>)}
+                                    {(user.isActive === false) && (<Button variant="success" onClick={() => Odblokuj(user.login)}>Odblokuj</Button>)}
+                                    <Button variant="danger" onClick={() => Delete(user.login)}>Usuń</Button>
+                                    <Link to={"/OpcjeHasel"}>
+                                    <Button variant="primary" onClick={()=>props.selectUser(user.login)}>Ograniczania haseł</Button>
+                                    </Link>
+                                    </td>
                             </tr>
                         </tbody>
                     ))}
                 </Table>
 
             )}
+            {(openView === true)&&(
+                <OpcjeHasel></OpcjeHasel>
+                )}
         </div>
     )
 }

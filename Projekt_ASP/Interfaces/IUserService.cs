@@ -12,6 +12,7 @@ namespace Projekt_ASP.Interfaces
         public Task GetCreateUser(CreateUserDto user);
         public Task DeleteUserLoginAsync(string login);
         public Task ZablokujUserAsync(string login);
+        public Task OdblokujUserAsync(string login);
         public Task RegisterAsync(string Login, string Paswword, string role);
         Task<TokenObjectDto> GetAccountByToken(string token);
         public Task<Token> LoginAsync(string Login, string password);

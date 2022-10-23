@@ -14,6 +14,7 @@ namespace Projekt_ASP.Interfaces
         public  Task DeleteAsync(string user);
         public  Task UpdateAsync(User user);
         public  Task Zablokuj(string login);
+        public  Task Odblokuj(string login);
     
     }
 }
