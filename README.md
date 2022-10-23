@@ -18,7 +18,7 @@
 
  - blokować konta użytkownikóworaz blokować ograniczenie wybranych haseł;
 
- - usuwać konta użytkowników;
+> OK - usuwać konta użytkowników;
 
  - włączyć /wyłączyć  ograniczenia  haseł  wybranych  przez  użytkownika  (zgodnie  z zadaniemindywidualnym). Rys.1–przykładprototypowania.;
 
