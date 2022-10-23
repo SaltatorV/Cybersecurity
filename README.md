@@ -41,5 +41,5 @@
 
 Ograniczenia dotyczące haseł użytkowników:
  
- - Hasło musi zawierać co najmniej 8 znaków,  co najmniej jedną wielką literę, co najmniej jeden znak specjalny;
+ > OK  - Hasło musi zawierać co najmniej 8 znaków,  co najmniej jedną wielką literę, co najmniej jeden znak specjalny;
 
