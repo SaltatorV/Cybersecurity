@@ -21,9 +21,9 @@
 
 > OK - usuwać konta użytkowników;
 
- - włączyć /wyłączyć  ograniczenia  haseł  wybranych  przez  użytkownika  (zgodnie  z zadaniemindywidualnym). Rys.1–przykładprototypowania.;
+> OK - włączyć /wyłączyć  ograniczenia  haseł  wybranych  przez  użytkownika  (zgodnie  z zadaniemindywidualnym). Rys.1–przykładprototypowania.;
 
- - ustawić ważność  hasła  użytkownika.  Po wygaśnięcia  hasła  (np. po  upływie  dni ustalonych),  użytkownik  podaje  nowe  hasło,  które  musi  różnić  się  od  wszystkich poprzednich.Rys.1–przykładprototypowania.
+> OK - ustawić ważność  hasła  użytkownika.  Po wygaśnięcia  hasła  (np. po  upływie  dni ustalonych),  użytkownik  podaje  nowe  hasło,  które  musi  różnić  się  od  wszystkich poprzednich.Rys.1–przykładprototypowania.
 
  - zakończenie pracy z programem.;
 
