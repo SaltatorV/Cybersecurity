@@ -7,7 +7,8 @@ namespace Projekt_ASP.Interfaces
 {
     public interface IUserService
     {
-
+        public Task<bool> CzyWygasloService(string login);
+        public Task OpcjeHasel(OpcjeHaselDto opcje);
         public Task ChangePassword(ChangePassword user);
         public Task GetCreateUser(CreateUserDto user);
         public Task DeleteUserLoginAsync(string login);

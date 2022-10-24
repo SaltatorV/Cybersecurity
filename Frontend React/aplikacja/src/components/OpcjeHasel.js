@@ -32,15 +32,17 @@ function OpcjeHasel(props) {
             Wygasniecie: formData.days,
         };
         console.log(userLogin)
+        console.log(props.token)
     
-    
-        const url = 'http://localhost:5157/Account/';
+        const header = new Headers();
+        header.set('Authorization', `Bearer ${props.token}`);
+        header.set('Content-Type', 'application/json');
+
+        const url = 'http://localhost:5157/Account/OpcjeHasel';
     
         fetch(url, {
           method: "POST",
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: header,
           body: JSON.stringify(userLogin)
         })
           .then(res => res.json()
@@ -49,7 +51,7 @@ function OpcjeHasel(props) {
           .then(resFromServer => {
     
             console.log(resFromServer)
-            if(resFromServer.token !== undefined){props.onUserLogin(resFromServer.token);}
+            if(resFromServer === 200){alert("Pomyslnei zmieniono ustawienia")}
             else if(resFromServer === 400){alert("Bad password or login");}
             
           })

@@ -18,6 +18,11 @@ namespace Projekt_ASP.Repository
         new User("User5","user5","User",true,DateTime.Now.AddDays(30),true)
         };
 
+        private static List<OldPassword> _oldPasswords = new List<OldPassword>(){
+            new OldPassword("Admin",new List<string>(){"admin","admin123","Admin1234@"}),
+            new OldPassword("User",new List<string>(){"user","user123","user1234"})
+        };
+
         public async Task<User> GetAsync(string login)
          => await Task.FromResult(_users.SingleOrDefault(x => x.Login.ToLowerInvariant() == login.ToLowerInvariant()));
 
@@ -55,70 +60,23 @@ namespace Projekt_ASP.Repository
         public async Task ChangePassword(ChangePassword change)
         {
             var user = _users.SingleOrDefault(x => x.Login == change.Login);
+            var oldPasswordUser = _oldPasswords.SingleOrDefault(x => x.Login == change.Login);
 
-            if (user.Password == change.OldPassword)
+            if (change.OldPassword != user.Password)
             {
-                
-
-                if (user.PolitykaHasel == true)
-                {
-                    if (change.NewPassword.Length >= 8)
-                    {
-                        for (int i = 0; i < change.NewPassword.Length; i++)
-                        {
-                            var ifTrue = Char.IsUpper(change.NewPassword, i);
-                            if (ifTrue)
-                            {
-                                
-                                for (int y = 0; y < change.NewPassword.Length; y++)
-                                {
-                                    var ifTrueSym4 = Char.IsPunctuation(change.NewPassword, y);
-
-                                    if (ifTrueSym4)
-                                    {
-
-                                        user.Password = change.NewPassword;
-                                        await Task.CompletedTask;
-                                        break;
-                                        
-
-                                    }
-                                    else if (y == change.NewPassword.Length - 1)
-                                    {
-                                        throw new Exception("Nie spełniono wymagan hasla");
-                                    }
-
-                                }
-                                break;
-
-                            }
-                            else if(i == change.NewPassword.Length-1)
-                            {
-                                throw new Exception("Nie spełniono wymagan hasla");
-                            }
-                           
-                        }
-
-                    }
-                    else if(user.Password.Length < 8)
-                    {
-                        throw new Exception("Nie spełniono wymagan hasla");
-                    }
-                }
-                else if(user.PolitykaHasel == false)
-                {
-                    user.Password = change.NewPassword;
-                    await Task.CompletedTask;
-                }
-
-
-
+                throw new Exception("Bad old password");
             }
-            else
+
+
+            if (user.PolitykaHasel == true)
             {
-                throw new Exception("Bad old password!");
-
+                await PasswordOptions.PasswordChecker.varunkiZmianyHasla(user, change);
             }
+
+            await PasswordOptions.PasswordChecker.poprzednieHasla(change, oldPasswordUser);
+
+            oldPasswordUser.Passwords.Add(change.NewPassword);
+            user.Password = change.NewPassword;
 
 
         }
@@ -141,6 +99,41 @@ namespace Projekt_ASP.Repository
             await Task.CompletedTask;
 
 
+        }
+
+        public async Task OpcjeHaselUser(OpcjeHaselDto opcje)
+        {
+            var user = _users.SingleOrDefault(x => x.Login == opcje.Login);
+
+            user.PolitykaHasel = opcje.PolitykaHasla;
+            var ifTrue = int.TryParse(opcje.Wygasniecie, out int resDays);
+            if (ifTrue)
+            {
+                user.DataWygasnieciaHasla = DateTime.Now.AddDays(resDays);
+            }
+            else if (ifTrue != null)
+            {
+                throw new Exception("Blad parsowania liczby");
+            }
+
+
+
+            await Task.CompletedTask;
+        }
+
+        public async Task<bool> CzyWygaslo(string login)
+        {
+            var user = _users.SingleOrDefault(x => x.Login == login);
+
+            if (user.DataWygasnieciaHasla > DateTime.Now)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            await Task.CompletedTask;
         }
     }
 }

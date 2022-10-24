@@ -185,9 +185,7 @@ function AllUsers(props) {
                 </Table>
 
             )}
-            {(openView === true)&&(
-                <OpcjeHasel></OpcjeHasel>
-                )}
+          
         </div>
     )
 }

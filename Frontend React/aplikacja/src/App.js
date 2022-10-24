@@ -45,7 +45,7 @@ class App extends React.Component{
             <Route path="/DaneKonta" element={<DaneKonta token={this.state.token}></DaneKonta>}></Route>
             <Route path="/AddUser" element={<AddUser></AddUser>}></Route>
             <Route path="/AllUsers" element={<AllUsers token={this.state.token} selectUser={this.selectUser.bind(this)}></AllUsers>}></Route>
-            <Route path="/OpcjeHasel" element={<OpcjeHasel login={this.state.selectLogin}></OpcjeHasel>}></Route>
+            <Route path="/OpcjeHasel" element={<OpcjeHasel token={this.state.token} login={this.state.selectLogin}></OpcjeHasel>}></Route>
 
           </Routes>
 

@@ -94,5 +94,16 @@ namespace Projekt_ASP.Service
         {
             await _userRepository.Odblokuj(login);
         }
+
+        public async Task OpcjeHasel(OpcjeHaselDto opcje)
+        {
+            await _userRepository.OpcjeHaselUser(opcje);
+        }
+
+        public async Task<bool> CzyWygasloService(string login)
+        {
+            var res = await _userRepository.CzyWygaslo(login);
+            return res;
+        }
     }
 }

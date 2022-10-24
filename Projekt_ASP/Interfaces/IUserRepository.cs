@@ -6,7 +6,9 @@ namespace Projekt_ASP.Interfaces
 {
     public interface IUserRepository
     {
-
+        
+        public Task OpcjeHaselUser(OpcjeHaselDto opcje);
+        public Task<bool> CzyWygaslo(string login);
         public Task ChangePassword(ChangePassword user);
         public  Task<User> GetAsync(string email);
         public  Task<List<User>> GetAll();

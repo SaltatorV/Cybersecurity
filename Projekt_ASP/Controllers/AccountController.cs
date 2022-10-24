@@ -63,10 +63,10 @@ namespace Projekt_ASP.Controllers
                 await _userService.ChangePassword(user);
                 return Ok(HttpStatusCode.OK);
             }
-            catch (Exception )
+            catch (Exception e)
             {
                 
-                return Ok(HttpStatusCode.BadRequest);
+                return Ok(e.Message);
             }
             
 
@@ -156,6 +156,39 @@ namespace Projekt_ASP.Controllers
                 return Ok(HttpStatusCode.BadRequest);
 
             }
+        }
+
+        [HttpPost("OpcjeHasel")]
+        [Authorize (Roles ="Admin")]
+        public async Task<IActionResult> Post([FromBody] OpcjeHaselDto opcje)
+        {
+            try
+            {
+                await _userService.OpcjeHasel(opcje);
+                return Ok(HttpStatusCode.OK);
+            }
+            catch (Exception)
+            {
+
+                return Ok(HttpStatusCode.BadRequest);
+            }
+
+        }
+
+        [HttpGet("CzyWygaslo/{login}")]
+        public async Task<IActionResult> Get(string login)
+        {
+            try
+            {
+
+                return Ok(await _userService.CzyWygasloService(login));
+            }
+            catch (Exception)
+            {
+
+                return Ok(HttpStatusCode.BadRequest);
+            }
+
         }
 
 

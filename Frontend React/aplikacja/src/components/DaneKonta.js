@@ -6,6 +6,7 @@ function DaneKonta(props) {
   const [formData, setfromData] = useState([])
   const [user, setUser] = useState('');
   const [httpRequest,setHttpRequest] = useState()
+  const [sprawdzono,setSprawdzono] = useState(false);
 
   const handleChange = (e) => {
     setfromData({
@@ -91,11 +92,44 @@ function DaneKonta(props) {
 
   }
 
+  function CzyWygaslo() {
+    const url = 'http://localhost:5157/Account/CzyWygaslo/' + user.login;
+    setSprawdzono(true)
+    fetch(url, {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+
+    })
+      .then(res => res.json()
+
+      )
+      .then(resFromServer => {
+
+        console.log(resFromServer)
+        if (resFromServer === true) { 
+          
+          alert("Haslo wygaslo") }
+        
+
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error);
+      })
+
+  }
+
+
+
+
 
   return (
     <div>
       
       {(user === '') && (tokenAuth())}
+      {(user !== '') && (sprawdzono === false)&&(CzyWygaslo())}
       {(user !== '') && (
         <div>
           <Form className='DaneKontaForm'>
