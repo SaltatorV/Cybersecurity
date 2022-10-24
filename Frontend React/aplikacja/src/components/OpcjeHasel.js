@@ -7,10 +7,12 @@ import { Button } from 'react-bootstrap';
 function OpcjeHasel(props) {
     const [formData, setfromData] = useState([]);
     const [checkSwitch, setCheckSwitch] = useState(false);
+    const [zaIle,setZaIle]= useState(0);
+    const [pobrano,setPobrano] = useState(false);
 
-    const handleChange = (e) => {
+    function handleChange() {
         setCheckSwitch(!checkSwitch)
-        
+        console.log(!checkSwitch)
     }
 
     const handleChangeText = (e) => {
@@ -62,8 +64,42 @@ function OpcjeHasel(props) {
     
         }
     
+        function ZaIleWygas() {
+          const url = 'http://localhost:5157/Account/ZaIleWygasnie/' + props.login;
+          setPobrano(true);
+          fetch(url, {
+            method: "GET",
+            headers: {
+              'Content-Type': 'application/json'
+            },
+      
+          })
+            .then(res => res.json()
+      
+            )
+            .then(resFromServer => {
+      
+              console.log(resFromServer)
+              if(resFromServer !== undefined)
+              {
+              setZaIle(resFromServer)
+              
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+              alert(error);
+            })
+            
+        }
+      
+      
+      
+      
     return (
         <div>
+          
+          {(pobrano === false)&&(ZaIleWygas())}
             <Link to={"/AllUsers"}>
                 <CloseButton />;
             </Link>
@@ -78,6 +114,14 @@ function OpcjeHasel(props) {
             </>
             <Form>
       <Form.Group className="mb-3" controlId="formBasicText">
+     
+     {(zaIle !== undefined)&&(
+      <div>
+        
+        <p><text>Haslo wygasnie za: {zaIle.days}</text></p>
+        <p><text>Polityka hasla {zaIle.politykaHasel}</text></p>
+        </div>
+        )}
         <Form.Label>Wpisz dni wygasniecia hasla</Form.Label>
         <Form.Control type="text" placeholder="days" onChange={handleChangeText} name={"days"}  />
       </Form.Group>

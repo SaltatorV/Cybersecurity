@@ -7,6 +7,8 @@ namespace Projekt_ASP.Interfaces
 {
     public interface IUserService
     {
+        public Task<TokenObjectDto> Verify(string token);
+        public Task<OptionsDto> ZaIleDniWygasnie(string login);
         public Task<bool> CzyWygasloService(string login);
         public Task OpcjeHasel(OpcjeHaselDto opcje);
         public Task ChangePassword(ChangePassword user);

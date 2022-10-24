@@ -105,5 +105,20 @@ namespace Projekt_ASP.Service
             var res = await _userRepository.CzyWygaslo(login);
             return res;
         }
+
+        public async Task<TokenObjectDto> Verify(string token)
+        {
+            var jwt = new JwtTokenGenerator();
+           var tUser= await jwt.Decode(token);
+            
+            return tUser;
+
+        }
+
+        public async Task<OptionsDto> ZaIleDniWygasnie(string login)
+        {
+             var ile = await _userRepository.ZaIleDniWygasnie(login);
+            return ile;
+        }
     }
 }

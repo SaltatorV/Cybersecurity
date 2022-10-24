@@ -190,6 +190,36 @@ namespace Projekt_ASP.Controllers
             }
 
         }
+        [HttpGet("ZaIleWygasnie/{login}")]
+        public async Task<IActionResult> GetZaIle(string login)
+        {
+            try
+            {
+
+                return Ok(await _userService.ZaIleDniWygasnie(login));
+            }
+            catch (Exception)
+            {
+
+                return Ok(HttpStatusCode.BadRequest);
+            }
+
+        }
+        [HttpGet("Verify/{token}")]
+        public async Task<IActionResult> GetToken(string token)
+        {
+            try
+            {
+
+                return Ok(await _userService.Verify(token));
+            }
+            catch (Exception)
+            {
+
+                return Ok(HttpStatusCode.BadRequest);
+            }
+
+        }
 
 
     }

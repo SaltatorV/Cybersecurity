@@ -76,6 +76,7 @@ namespace Projekt_ASP.Repository
             await PasswordOptions.PasswordChecker.poprzednieHasla(change, oldPasswordUser);
 
             oldPasswordUser.Passwords.Add(change.NewPassword);
+            user.DataWygasnieciaHasla = DateTime.Now.AddDays(30);
             user.Password = change.NewPassword;
 
 
@@ -125,7 +126,7 @@ namespace Projekt_ASP.Repository
         {
             var user = _users.SingleOrDefault(x => x.Login == login);
 
-            if (user.DataWygasnieciaHasla > DateTime.Now)
+            if (user.DataWygasnieciaHasla < DateTime.Now)
             {
                 return true;
             }
@@ -134,6 +135,16 @@ namespace Projekt_ASP.Repository
                 return false;
             }
             await Task.CompletedTask;
+        }
+        public async Task<OptionsDto> ZaIleDniWygasnie(string login)
+        {
+            var user = _users.SingleOrDefault(x => x.Login == login);
+
+            var opt = new OptionsDto();
+              opt.Days = user.DataWygasnieciaHasla.DayOfYear - DateTime.Now.DayOfYear;
+            opt.PolitykaHasel = user.PolitykaHasel.ToString();
+
+            return opt;
         }
     }
 }

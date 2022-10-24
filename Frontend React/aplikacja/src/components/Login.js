@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 function Login(props) {
 
   const [formData, setfromData] = useState([])
+  const [zalogowano,setZalogowano] = useState('');
 
   const handleChange = (e) => {
     setfromData({
@@ -44,6 +45,7 @@ function Login(props) {
         console.log(resFromServer)
         if (resFromServer.token !== undefined) {
           props.onUserLogin(resFromServer.token);
+          
 
         }
         else if (resFromServer === 400) { alert("Bad password or login"); }
@@ -60,7 +62,7 @@ function Login(props) {
   return (
 
     <div>
-
+      
       
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -73,11 +75,11 @@ function Login(props) {
           <Form.Control type="password" placeholder="Password" value={formData.password} name={"password"} onChange={handleChange} />
         </Form.Group>
 
-
+        
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit
         </Button>
-
+        
       </Form>
 
 

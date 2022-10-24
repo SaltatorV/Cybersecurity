@@ -23,7 +23,11 @@ class App extends React.Component{
 
   this.setState({token:tokenUser})
   alert("Zalogowano")
-
+  if(tokenUser === null)
+  {
+    this.setState({token:''})
+  }
+  
   }
   selectUser(login)
   {
@@ -31,7 +35,8 @@ class App extends React.Component{
     this.setState({selectLogin:login})
   }
 
-
+   
+  
   render()
   {
     
@@ -39,7 +44,7 @@ class App extends React.Component{
       return(
         <>
           <Router>
-          <NavBarApp />
+          <NavBarApp token={this.state.token} onUserLogin={this.onUserLogin.bind(this)}/>
           <Routes>
             <Route path="/Login" element={<Login onUserLogin={this.onUserLogin.bind(this)}></Login>}></Route>
             <Route path="/DaneKonta" element={<DaneKonta token={this.state.token}></DaneKonta>}></Route>
