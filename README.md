@@ -4,7 +4,7 @@
 
 ### I. Napisz program, który implementuje następujące zasady dla systemu bezpieczeństwa: ###
 
-> OK 1. Program powinien zapewniać pracę w dwóch rolach: administratora (użytkownik o stałej nazwie ADMIN) oraz zwykłego użytkownika. 
+> 1. Program powinien zapewniać pracę w dwóch rolach: administratora (użytkownik o stałej nazwie ADMIN) oraz zwykłego użytkownika. 
 
 2. W rolę administratora program musi zawierać następującefunkcje:
 
