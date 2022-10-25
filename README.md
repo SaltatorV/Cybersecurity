@@ -25,7 +25,7 @@
 
 > OK - ustawić ważność  hasła  użytkownika.  Po wygaśnięcia  hasła  (np. po  upływie  dni ustalonych),  użytkownik  podaje  nowe  hasło,  które  musi  różnić  się  od  wszystkich poprzednich.Rys.1–przykładprototypowania.
 
- - zakończenie pracy z programem.;
+> OK - zakończenie pracy z programem.;
 
 > OK 3. W roli użytkownika program powinien zawierać tylko funkcje zmiany hasła użytkownika (jeśli stare hasło jest wpisane poprawnie) i zakończenia pracy. 
 
@@ -33,7 +33,7 @@
 
 > OK 5. Komunikat w przypadku wprowadzenienie popranego identyfikatoralub hasła: „Login lub Hasło niepoprawny”.
 
-6. Przy  pierwszym  logowaniu  system powinien prosić o zmianę hasła dostępu ustalonego przez  administratora  na  hasło  własne,  znane  tylko  użytkownikowi,  utworzone  według zadaniaindywidualnego.Nowe hasło należy podać oraz powtórzyć.
+> OK 6. Przy  pierwszym  logowaniu  system powinien prosić o zmianę hasła dostępu ustalonego przez  administratora  na  hasło  własne,  znane  tylko  użytkownikowi,  utworzone  według zadaniaindywidualnego.Nowe hasło należy podać oraz powtórzyć.
 
 7. Należystosować bezpieczny algorytm hashujący do przechowywania haseł.
 
