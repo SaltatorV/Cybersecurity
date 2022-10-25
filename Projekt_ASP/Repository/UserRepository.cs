@@ -11,11 +11,11 @@ namespace Projekt_ASP.Repository
 
         private static List<User> _users = new List<User>() {
         new User("Admin","admin","Admin",true,DateTime.Now.AddDays(30),false),
-        new User("User","user","User",true,DateTime.Now.AddDays(30),false),
-        new User("User2","user2","User",true,DateTime.Now.AddDays(30),false),
-        new User("User3","user3","User",true,DateTime.Now.AddDays(30),false),
-        new User("User4","user4","User",true,DateTime.Now.AddDays(30),false),
-        new User("User5","user5","User",true,DateTime.Now.AddDays(30),false)
+        new User("User","user","User",true,DateTime.Now.AddDays(-1),true),
+        new User("User2","user2","User",true,DateTime.Now.AddDays(-1),true),
+        new User("User3","user3","User",true,DateTime.Now.AddDays(-1),true),
+        new User("User4","user4","User",true,DateTime.Now.AddDays(-1),true),
+        new User("User5","user5","User",true,DateTime.Now.AddDays(-1),true)
         };
 
         private static List<OldPassword> _oldPasswords = new List<OldPassword>(){
