@@ -148,7 +148,7 @@ function AllUsers(props) {
 
     return (
 
-        <div>
+        <div className='AppTable'>
 
             {(usersList === '') && (getUsers())}
             {(usersList != '') && (
@@ -161,6 +161,7 @@ function AllUsers(props) {
                             <th>Rola</th>
                             <th>Status</th>
                             <th>Akcja</th>
+                            
                         </tr>
                     </thead>
                     {(usersList.map((user, id) =>
@@ -171,14 +172,14 @@ function AllUsers(props) {
                                 <td>*******</td>
                                 <td>{user.role}</td>
                                 <td>{user.isActive.toString()}</td>
-                                <td>
-                                    {(user.isActive === true) && (<Button variant="warning" onClick={() => Zablokuj(user.login)}>Zablokuj</Button>)}
+                                <td>{(user.isActive === true) && (<Button variant="warning" onClick={() => Zablokuj(user.login)}>Zablokuj</Button>)}
                                     {(user.isActive === false) && (<Button variant="success" onClick={() => Odblokuj(user.login)}>Odblokuj</Button>)}
                                     <Button variant="danger" onClick={() => Delete(user.login)}>Usuń</Button>
                                     <Link to={"/OpcjeHasel"}>
                                     <Button variant="primary" onClick={()=>props.selectUser(user.login)}>Ograniczania haseł</Button>
                                     </Link>
                                     </td>
+                                    
                             </tr>
                         </tbody>
                     ))}

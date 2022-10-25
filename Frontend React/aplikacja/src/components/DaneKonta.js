@@ -126,7 +126,7 @@ function DaneKonta(props) {
 
 
   return (
-    <div>
+    <div className='App'>
       
       {(user === '') && (tokenAuth())}
       {(user !== '') && (sprawdzono === false)&&(CzyWygaslo())}

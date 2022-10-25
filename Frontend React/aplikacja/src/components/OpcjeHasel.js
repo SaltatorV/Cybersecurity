@@ -97,12 +97,14 @@ function OpcjeHasel(props) {
       
       
     return (
-        <div>
-          
+        
+      <div >
           {(pobrano === false)&&(ZaIleWygas())}
             <Link to={"/AllUsers"}>
-                <CloseButton />;
+                <CloseButton className='ButtonClose'/>
             </Link>
+           
+            <div className='App'>
 
             <>
                 <Form.Check
@@ -117,19 +119,19 @@ function OpcjeHasel(props) {
      
      {(zaIle !== undefined)&&(
       <div>
-        
+        <p></p>
         <p><text>Haslo wygasnie za: {zaIle.days}</text></p>
-        <p><text>Polityka hasla {zaIle.politykaHasel}</text></p>
+        <p><text>Polityka hasła: {zaIle.politykaHasel}</text></p>
         </div>
         )}
         <Form.Label>Wpisz dni wygasniecia hasla</Form.Label>
-        <Form.Control type="text" placeholder="days" onChange={handleChangeText} name={"days"}  />
+        <Form.Control type="text" placeholder="Wpisz za ile dni wygasnie hasło" onChange={handleChangeText} name={"days"}  />
       </Form.Group>
       </Form>
         <Button variant='primary' onClick={handleSubmit}>Zatwierdź</Button>
 
 
-
+        </div>
         </div >
     )
 }

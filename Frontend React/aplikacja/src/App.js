@@ -13,40 +13,41 @@ import OpcjeHasel from './components/OpcjeHasel';
 
 
 
-class App extends React.Component{
+class App extends React.Component {
   state = {
-    token:'',
-    selectLogin:''
+    token: '',
+    selectLogin: ''
   }
 
   onUserLogin(tokenUser) {
 
-  this.setState({token:tokenUser})
-  alert("Zalogowano")
-  if(tokenUser === null)
-  {
-    this.setState({token:''})
+    if (tokenUser !== null) {
+      this.setState({ token: tokenUser })
+      alert("Zalogowano")
+    }
+
+    else if (tokenUser === null) {
+      this.setState({ token: '' })
+      alert("Wylogowano")
+    }
+
   }
-  
-  }
-  selectUser(login)
-  {
+  selectUser(login) {
     console.log(login)
-    this.setState({selectLogin:login})
+    this.setState({ selectLogin: login })
   }
 
-   
-  
-  render()
-  {
-    
-      
-      return(
-        <>
-          <Router>
-          <NavBarApp token={this.state.token} onUserLogin={this.onUserLogin.bind(this)}/>
+
+
+  render() {
+
+
+    return (
+      <>
+        <Router>
+          <NavBarApp token={this.state.token} onUserLogin={this.onUserLogin.bind(this)} />
           <Routes>
-            <Route path="/Login" element={<Login onUserLogin={this.onUserLogin.bind(this)}></Login>}></Route>
+            <Route path="/Login" element={<Login onUserLogin={this.onUserLogin.bind(this)} token={this.state.token}></Login>}></Route>
             <Route path="/DaneKonta" element={<DaneKonta token={this.state.token}></DaneKonta>}></Route>
             <Route path="/AddUser" element={<AddUser></AddUser>}></Route>
             <Route path="/AllUsers" element={<AllUsers token={this.state.token} selectUser={this.selectUser.bind(this)}></AllUsers>}></Route>
@@ -54,11 +55,11 @@ class App extends React.Component{
 
           </Routes>
 
-          
+
         </Router>
-        </>
-      )
-    
+      </>
+    )
+
   }
 }
 

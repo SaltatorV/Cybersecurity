@@ -10,12 +10,12 @@ namespace Projekt_ASP.Repository
 
 
         private static List<User> _users = new List<User>() {
-        new User("Admin","admin","Admin",true,DateTime.Now.AddDays(30),true),
-        new User("User","user","User",true,DateTime.Now.AddDays(30),true),
-        new User("User2","user2","User",true,DateTime.Now.AddDays(30),true),
-        new User("User3","user3","User",true,DateTime.Now.AddDays(30),true),
-        new User("User4","user4","User",true,DateTime.Now.AddDays(30),true),
-        new User("User5","user5","User",true,DateTime.Now.AddDays(30),true)
+        new User("Admin","admin","Admin",true,DateTime.Now.AddDays(30),false),
+        new User("User","user","User",true,DateTime.Now.AddDays(30),false),
+        new User("User2","user2","User",true,DateTime.Now.AddDays(30),false),
+        new User("User3","user3","User",true,DateTime.Now.AddDays(30),false),
+        new User("User4","user4","User",true,DateTime.Now.AddDays(30),false),
+        new User("User5","user5","User",true,DateTime.Now.AddDays(30),false)
         };
 
         private static List<OldPassword> _oldPasswords = new List<OldPassword>(){
@@ -29,7 +29,12 @@ namespace Projekt_ASP.Repository
 
         public async Task<List<User>> GetAll()
         {
-            return await Task.FromResult(_users);
+            var listUser = _users.ToList();
+            //Zakaz edycji danych Admina
+            var admin = _users.SingleOrDefault(admin => admin.Login == "Admin");
+
+            listUser.Remove(admin);
+            return await Task.FromResult(listUser);
         }
         public async Task AddAsync(CreateUserDto user)
         {

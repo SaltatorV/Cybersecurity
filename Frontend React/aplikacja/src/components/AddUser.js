@@ -56,7 +56,7 @@ function AddUser() {
 
 
     return (
-        <div>
+        <div className='App'>
             <div>
                 <Form className='DaneKontaForm'>
 
@@ -87,10 +87,9 @@ function AddUser() {
                         value={formData.confirmPassword}
                         name="confirmPassword"
                     />
-                    
                     <Form.Text id="passwordHelpBlock" muted >
-                        Zmiana hasla
-                    </Form.Text>
+                        Wybierz role
+                        </Form.Text>
 
                     <Form.Select aria-label="Default select example" onChange={handleChange} name="role">
                         <option>Open this select menu</option>
@@ -99,7 +98,8 @@ function AddUser() {
                     </Form.Select>
 
 
-                    <p><Button variant="primary" onClick={handleSubmit}>Stwórz</Button></p>
+                    <p></p>
+                    <Button variant="primary" onClick={handleSubmit}>Stwórz</Button>
 
                 </Form>
             </div>

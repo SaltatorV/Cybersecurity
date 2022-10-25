@@ -50,7 +50,7 @@ function NavBarApp(props) {
     
     <Navbar bg="dark" variant="dark">
     <Container>
-      <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+      <Navbar.Brand href="#home">SimpleApp</Navbar.Brand>
       <Nav className="me-auto">
         {(user.login === undefined)&&(<Nav.Link as={Link} to={"/Login"} href="Login">Login</Nav.Link>)}
         {(user.login !== undefined)&&(<Nav.Link as={Link} to={"/Login"} href="Logout"onClick={()=>logout()}>Logout</Nav.Link>)}
