@@ -8,6 +8,12 @@
             Passwords = passwords;
         }
 
+        public OldPassword(String login)
+        {
+            Login = login;
+            Passwords = new List<string>();
+        }
+
         public string Login { get; set; }
         public List<string> Passwords { get; set; }
     }

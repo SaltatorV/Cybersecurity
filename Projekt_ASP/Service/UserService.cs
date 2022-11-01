@@ -56,7 +56,7 @@ namespace Projekt_ASP.Service
         public async Task<Token> LoginAsync(string login, string password)
         {
             var userLogin = await _userRepository.GetAsync(login);
-            if (userLogin.Password != password)
+            if (userLogin.Password != PasswordEncryption.Hash(password))
             {
                 throw new Exception("Password is bad");
 

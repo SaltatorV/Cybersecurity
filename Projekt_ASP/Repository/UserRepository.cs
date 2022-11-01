@@ -2,6 +2,7 @@
 using Projekt_ASP.Data;
 using Projekt_ASP.DTO;
 using Projekt_ASP.Interfaces;
+using Projekt_ASP.Service;
 
 namespace Projekt_ASP.Repository
 {
@@ -10,17 +11,17 @@ namespace Projekt_ASP.Repository
 
 
         private static List<User> _users = new List<User>() {
-        new User("Admin","admin","Admin",true,DateTime.Now.AddDays(30),false),
-        new User("User","user","User",true,DateTime.Now.AddDays(-1),true),
-        new User("User2","user2","User",true,DateTime.Now.AddDays(-1),true),
-        new User("User3","user3","User",true,DateTime.Now.AddDays(-1),true),
-        new User("User4","user4","User",true,DateTime.Now.AddDays(-1),true),
-        new User("User5","user5","User",true,DateTime.Now.AddDays(-1),true)
+        new User("Admin",PasswordEncryption.Hash("admin"),"Admin",true,DateTime.Now.AddDays(30),false),
+        new User("User",PasswordEncryption.Hash("user"),"User",true,DateTime.Now.AddDays(-1),true),
+        new User("User2",PasswordEncryption.Hash("user2"),"User",true,DateTime.Now.AddDays(-1),true),
+        new User("User3",PasswordEncryption.Hash("user3"),"User",true,DateTime.Now.AddDays(-1),true),
+        new User("User4",PasswordEncryption.Hash("user4"),"User",true,DateTime.Now.AddDays(-1),true),
+        new User("User5",PasswordEncryption.Hash("user5"),"User",true,DateTime.Now.AddDays(-1),true)
         };
 
         private static List<OldPassword> _oldPasswords = new List<OldPassword>(){
-            new OldPassword("Admin",new List<string>(){"admin","admin123","Admin1234@"}),
-            new OldPassword("User",new List<string>(){"user","user123","user1234"})
+            new OldPassword("Admin",new List<string>(){ PasswordEncryption.Hash("admin"), PasswordEncryption.Hash("admin123"), PasswordEncryption.Hash("Admin1234@")}),
+            new OldPassword("User",new List<string>(){ PasswordEncryption.Hash("user"), PasswordEncryption.Hash("user123"), PasswordEncryption.Hash("user1234")})
         };
 
         public async Task<User> GetAsync(string login)
@@ -43,7 +44,7 @@ namespace Projekt_ASP.Repository
             {
                 throw new Exception("Login jest zajety");
             }
-            var userUser = new User(user.Login, user.NewPassword, user.Role, true, DateTime.Now.AddDays(30), true);
+            var userUser = new User(user.Login, PasswordEncryption.Hash(user.NewPassword), user.Role, true, DateTime.Now.AddDays(30), true);
             _users.Add(userUser);
             await Task.CompletedTask;
         }
@@ -64,8 +65,15 @@ namespace Projekt_ASP.Repository
 
         public async Task ChangePassword(ChangePassword change)
         {
+            change.OldPassword = PasswordEncryption.Hash(change.OldPassword);
+            change.NewPassword = PasswordEncryption.Hash(change.NewPassword);
             var user = _users.SingleOrDefault(x => x.Login == change.Login);
             var oldPasswordUser = _oldPasswords.SingleOrDefault(x => x.Login == change.Login);
+            if(oldPasswordUser == null)
+            {
+                oldPasswordUser = new OldPassword(change.Login);
+                _oldPasswords.Add(oldPasswordUser);
+            }
 
             if (change.OldPassword != user.Password)
             {
@@ -78,7 +86,9 @@ namespace Projekt_ASP.Repository
                 await PasswordOptions.PasswordChecker.varunkiZmianyHasla(user, change);
             }
 
-            await PasswordOptions.PasswordChecker.poprzednieHasla(change, oldPasswordUser);
+                Console.WriteLine(oldPasswordUser.Passwords.Count);
+                await PasswordOptions.PasswordChecker.poprzednieHasla(change, oldPasswordUser);
+            
 
             oldPasswordUser.Passwords.Add(change.NewPassword);
             user.DataWygasnieciaHasla = DateTime.Now.AddDays(30);
