@@ -35,7 +35,7 @@
 
 > OK 6. Przy  pierwszym  logowaniu  system powinien prosić o zmianę hasła dostępu ustalonego przez  administratora  na  hasło  własne,  znane  tylko  użytkownikowi,  utworzone  według zadaniaindywidualnego.Nowe hasło należy podać oraz powtórzyć.
 
-7. Należystosować bezpieczny algorytm hashujący do przechowywania haseł.
+> OK 7. Należystosować bezpieczny algorytm hashujący do przechowywania haseł.
 
 ### II. Zadania indywidualne ###
 
