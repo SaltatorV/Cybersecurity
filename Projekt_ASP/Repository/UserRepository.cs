@@ -65,11 +65,11 @@ namespace Projekt_ASP.Repository
 
         public async Task ChangePassword(ChangePassword change)
         {
-            change.OldPassword = PasswordEncryption.Hash(change.OldPassword);
-            change.NewPassword = PasswordEncryption.Hash(change.NewPassword);
+            
             var user = _users.SingleOrDefault(x => x.Login == change.Login);
             var oldPasswordUser = _oldPasswords.SingleOrDefault(x => x.Login == change.Login);
-            if(oldPasswordUser == null)
+            change.OldPassword = PasswordEncryption.Hash(change.OldPassword);
+            if (oldPasswordUser == null)
             {
                 oldPasswordUser = new OldPassword(change.Login);
                 _oldPasswords.Add(oldPasswordUser);
@@ -86,7 +86,10 @@ namespace Projekt_ASP.Repository
                 await PasswordOptions.PasswordChecker.varunkiZmianyHasla(user, change);
             }
 
-                Console.WriteLine(oldPasswordUser.Passwords.Count);
+            
+            change.NewPassword = PasswordEncryption.Hash(change.NewPassword);
+
+            Console.WriteLine(oldPasswordUser.Passwords.Count);
                 await PasswordOptions.PasswordChecker.poprzednieHasla(change, oldPasswordUser);
             
 

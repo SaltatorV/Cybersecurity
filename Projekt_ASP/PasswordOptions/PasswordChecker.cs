@@ -47,7 +47,7 @@ namespace Projekt_ASP.PasswordOptions
                 }
 
             }
-            else if (user.Password.Length < 8)
+            else if (change.NewPassword.Length < 8)
             {
                 throw new Exception("Nie spełniono wymagan hasla");
             }
