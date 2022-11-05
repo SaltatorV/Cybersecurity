@@ -111,7 +111,7 @@ function OpcjeHasel(props) {
                     aria-label="option 1"
                     onChange={handleChange}
                     value={checkSwitch}
-                    label="Hasło musi zawierać co najmniej 8 znaków, co najmniej jedną wielką literę, co najmniej jeden znak specjalny"
+                    label="(Polityka hasła) Hasło musi zawierać co najmniej 8 znaków, co najmniej jedną wielką literę, co najmniej jeden znak specjalny"
                 />
             </>
             <Form>

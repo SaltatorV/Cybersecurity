@@ -68,7 +68,7 @@ function Login(props) {
       {(props.token === '') && (
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label>Login</Form.Label>
             <Form.Control type="text" placeholder="login" value={formData.login} name={"login"} onChange={handleChange} />
           </Form.Group>
 
