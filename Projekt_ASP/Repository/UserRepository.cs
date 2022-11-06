@@ -12,11 +12,11 @@ namespace Projekt_ASP.Repository
 
         private static List<User> _users = new List<User>() {
         new User("Admin",PasswordEncryption.Hash("admin"),"Admin",true,DateTime.Now.AddDays(30),false),
-        new User("User",PasswordEncryption.Hash("user"),"User",true,DateTime.Now.AddDays(-1),true),
-        new User("User2",PasswordEncryption.Hash("user2"),"User",true,DateTime.Now.AddDays(-1),true),
-        new User("User3",PasswordEncryption.Hash("user3"),"User",true,DateTime.Now.AddDays(-1),true),
-        new User("User4",PasswordEncryption.Hash("user4"),"User",true,DateTime.Now.AddDays(-1),true),
-        new User("User5",PasswordEncryption.Hash("user5"),"User",true,DateTime.Now.AddDays(-1),true)
+        new User("User",PasswordEncryption.Hash("user"),"User",true,DateTime.Now.AddDays(0),true),
+        new User("User2",PasswordEncryption.Hash("user2"),"User",true,DateTime.Now.AddDays(0),true),
+        new User("User3",PasswordEncryption.Hash("user3"),"User",true,DateTime.Now.AddDays(0),true),
+        new User("User4",PasswordEncryption.Hash("user4"),"User",true,DateTime.Now.AddDays(0),true),
+        new User("User5",PasswordEncryption.Hash("user5"),"User",true,DateTime.Now.AddDays(0),true)
         };
 
         private static List<OldPassword> _oldPasswords = new List<OldPassword>(){
@@ -69,6 +69,7 @@ namespace Projekt_ASP.Repository
             var user = _users.SingleOrDefault(x => x.Login == change.Login);
             var oldPasswordUser = _oldPasswords.SingleOrDefault(x => x.Login == change.Login);
             change.OldPassword = PasswordEncryption.Hash(change.OldPassword);
+
             if (oldPasswordUser == null)
             {
                 oldPasswordUser = new OldPassword(change.Login);
