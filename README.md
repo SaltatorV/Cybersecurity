@@ -27,7 +27,7 @@
 ![image](https://user-images.githubusercontent.com/95255764/200167010-648840f8-3204-4731-920a-117729fa9f14.png)
 
 
-- Czas sesji użytkownika(minimalny czas nieaktywności, po którym użytkownik zostanie wylogowany z programu). Rys.5–przykładprototypowania.
+- Czas sesji użytkownika(minimalny czas nieaktywności, po którym użytkownik zostanie wylogowany z programu).
 ![image](https://user-images.githubusercontent.com/95255764/200167016-2ea6a80b-0321-432b-b7b0-f10e0be977bb.png)
 
 
