@@ -1,6 +1,18 @@
 # Cybersecurity
 
-## Zadanie do zrealiwoania ##
+## Zadanie do zrealiwoania - II ##
+
+### I. Udoskonalenie projeku z ćwiczenia I: ###
+
+
+
+
+
+
+
+## ---------------------------------------------------------- ##
+
+## Zadanie do zrealiwoania - I ##
 
 ### I. Napisz program, który implementuje następujące zasady dla systemu bezpieczeństwa: ###
 
