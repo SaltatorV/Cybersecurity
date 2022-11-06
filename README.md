@@ -8,7 +8,7 @@
 
 - W przypadku pomyślnego uwierzytelnienia użytkownika i podaniu przez niego kodu operacji   na   obiekcie,   sprawdzenie autoryzacji  użytkownikai,  w  zależności  od wyników tego sprawdzenia,  dopuszczenie  do  wykonania  danej  operacji  na  wybranym obiekcie lub zabronienie jej wykonania.
 
-1. Program  powinien monitorować  aktywności  użytkowników. Odnotowywane są takie zdarzenia jak: logowanie / wylogowanie do programu; tworzenie/usunięcie użytkownika; nadanie/odebranie uprawnień  użytkownika;  zmiana  hasla  użytkownika...  Gdzie wyszczególnia się następujące informacje: Nazwa użytkownika; Data i czas akcji; Opis akcji (sukces lub błąd zapisu/logowania/dodania użytkownika...)
+Seba -> 1. Program  powinien monitorować  aktywności  użytkowników. Odnotowywane są takie zdarzenia jak: logowanie / wylogowanie do programu; tworzenie/usunięcie użytkownika; nadanie/odebranie uprawnień  użytkownika;  zmiana  hasla  użytkownika...  Gdzie wyszczególnia się następujące informacje: Nazwa użytkownika; Data i czas akcji; Opis akcji (sukces lub błąd zapisu/logowania/dodania użytkownika...)
 
 2. W rolę administratora program musi zawierać następującefunkcje:
 - Hasło  jednorazowe(przy  tworzeniu  nowego  użytkownika  bądź  przy  edycji  już istniejącego, administrator ma do wyboru wygenerowanie hasła jednorazowego według zadania indywidualnego oraz funkcji jednokierunkowej).
