@@ -9,11 +9,30 @@
 - W przypadku pomyślnego uwierzytelnienia użytkownika i podaniu przez niego kodu operacji   na   obiekcie,   sprawdzenie autoryzacji  użytkownikai,  w  zależności  od wyników tego sprawdzenia,  dopuszczenie  do  wykonania  danej  operacji  na  wybranym obiekcie lub zabronienie jej wykonania.
 
 1. Program  powinien monitorować  aktywności  użytkowników. Odnotowywane są takie zdarzenia jak: logowanie / wylogowanie do programu; tworzenie/usunięcie użytkownika; nadanie/odebranie uprawnień  użytkownika;  zmiana  hasla  użytkownika...  Gdzie wyszczególnia się następujące informacje: Nazwa użytkownika; Data i czas akcji; Opis akcji (sukces lub błąd zapisu/logowania/dodania użytkownika...)
-2. W rolę administratora program musi zawierać następującefunkcje:-Hasło  jednorazowe(przy  tworzeniu  nowego  użytkownika  bądź  przy  edycji  już istniejącego, administrator ma do wyboru wygenerowanie hasła jednorazowegowedług zadania    indywidualnegooraz    funkcjijednokierunkowej). Rys.1,2 –przykładyprototypowania.
-3. Sprawdzenia   logów   aktywnościwszystkich  użytkowników  korzystających  z programu. Rys.3–przykładprototypowania.-Limit  błędnych  logowań(możliwość ustalenia limitu błędnych logowań, po których użytkownik zostanie zablokowany i nie będzie mógł się zalogować przez okres 15 minut do programu). Rys.4–przykładprototypowania.
-4. Czas sesji użytkownika(minimalny czas nieaktywności, po którym użytkownik zostanie wylogowany z programu). Rys.5–przykładprototypowania.
+
+2. W rolę administratora program musi zawierać następującefunkcje:
+- Hasło  jednorazowe(przy  tworzeniu  nowego  użytkownika  bądź  przy  edycji  już istniejącego, administrator ma do wyboru wygenerowanie hasła jednorazowego według zadania indywidualnego oraz funkcji jednokierunkowej).
+
+![image](https://user-images.githubusercontent.com/95255764/200166983-ed62b1bc-6ceb-4ea9-9707-fed91dac971a.png)
+
+![image](https://user-images.githubusercontent.com/95255764/200166989-d66289c4-f45e-47e3-89ea-5bedda836e34.png)
+
+- Sprawdzenia   logów   aktywności wszystkich  użytkowników  korzystających  z programu.
+
+![image](https://user-images.githubusercontent.com/95255764/200167002-5fc217d9-6c77-4dc0-9696-a63e674f1842.png)
 
 
+- Limit  błędnych  logowań(możliwość ustalenia limitu błędnych logowań, po których użytkownik zostanie zablokowany i nie będzie mógł się zalogować przez okres 15 minut do programu).
+
+![image](https://user-images.githubusercontent.com/95255764/200167010-648840f8-3204-4731-920a-117729fa9f14.png)
+
+
+- Czas sesji użytkownika(minimalny czas nieaktywności, po którym użytkownik zostanie wylogowany z programu). Rys.5–przykładprototypowania.
+![image](https://user-images.githubusercontent.com/95255764/200167016-2ea6a80b-0321-432b-b7b0-f10e0be977bb.png)
+
+
+
+## Zadania indywidualne ##
 ![image](https://user-images.githubusercontent.com/95255764/200166753-36e4d1af-0243-4df3-859e-a4d60e327187.png)
 
 
