@@ -1,10 +1,20 @@
 # Cybersecurity
 
-## Zadanie do zrealiwoania - II ##
+## Zadanie do zrealizowania - II ##
 
 ### I. Udoskonalenie projeku z ćwiczenia I: ###
 
+- Identyfikacja użytkownika (uwierzytelnienie) na podstawie danych uwierzytelniających i wzależności od wyników identyfikacji dopuszczenie użytkownika do dalszych działań w systemie lub zabronienie dostępu.
 
+- W przypadku pomyślnego uwierzytelnienia użytkownika i podaniu przez niego kodu operacji   na   obiekcie,   sprawdzenie autoryzacji  użytkownikai,  w  zależności  od wyników tego sprawdzenia,  dopuszczenie  do  wykonania  danej  operacji  na  wybranym obiekcie lub zabronienie jej wykonania.
+
+1. Program  powinien monitorować  aktywności  użytkowników. Odnotowywane są takie zdarzenia jak: logowanie / wylogowanie do programu; tworzenie/usunięcie użytkownika; nadanie/odebranie uprawnień  użytkownika;  zmiana  hasla  użytkownika...  Gdzie wyszczególnia się następujące informacje: Nazwa użytkownika; Data i czas akcji; Opis akcji (sukces lub błąd zapisu/logowania/dodania użytkownika...)
+2. W rolę administratora program musi zawierać następującefunkcje:-Hasło  jednorazowe(przy  tworzeniu  nowego  użytkownika  bądź  przy  edycji  już istniejącego, administrator ma do wyboru wygenerowanie hasła jednorazowegowedług zadania    indywidualnegooraz    funkcjijednokierunkowej). Rys.1,2 –przykładyprototypowania.
+3. Sprawdzenia   logów   aktywnościwszystkich  użytkowników  korzystających  z programu. Rys.3–przykładprototypowania.-Limit  błędnych  logowań(możliwość ustalenia limitu błędnych logowań, po których użytkownik zostanie zablokowany i nie będzie mógł się zalogować przez okres 15 minut do programu). Rys.4–przykładprototypowania.
+4. Czas sesji użytkownika(minimalny czas nieaktywności, po którym użytkownik zostanie wylogowany z programu). Rys.5–przykładprototypowania.
+
+
+![image](https://user-images.githubusercontent.com/95255764/200166753-36e4d1af-0243-4df3-859e-a4d60e327187.png)
 
 
 
@@ -12,7 +22,7 @@
 
 ## ---------------------------------------------------------- ##
 
-## Zadanie do zrealiwoania - I ##
+## Zadanie do zrealizowania - I ##
 
 ### I. Napisz program, który implementuje następujące zasady dla systemu bezpieczeństwa: ###
 
