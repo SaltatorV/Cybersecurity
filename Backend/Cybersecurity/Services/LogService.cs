@@ -40,9 +40,6 @@ namespace Cybersecurity.Services
                     Action = action,
                     Message = message
                 };
-
-                await _logRepository.InsertAsync(log);
-                await _logRepository.SaveAsync();
             }
             else
             {
@@ -53,11 +50,10 @@ namespace Cybersecurity.Services
                     UserId = id,
                     Message = message
                 };
-
-                await _logRepository.InsertAsync(log);
-                await _logRepository.SaveAsync();
             }
 
+            await _logRepository.InsertAsync(log);
+            await _logRepository.SaveAsync();
         }
     }
 }
