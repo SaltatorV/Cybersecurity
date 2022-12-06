@@ -50,14 +50,20 @@ namespace Cybersecurity.Services
             var user = await _userRepository.GetByPredicateAsync(u => u.Login == loginDto.Login);
 
             if (user is null)
+            {
+                await _logService.AddLog($"Nie znaleziono użytkownika {loginDto.Login}", "Logowanie", 0);
                 throw new BadRequestException("Niepoprawny login lub hasło");
+            }
 
             var role = await _roleRepository.GetByIdAsync(user.RoleId);
 
             var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password);
 
             if (passwordVerification == PasswordVerificationResult.Failed)
+            {
+                await _logService.AddLog("Wpisane złe hasło", "Logowanie", user.Id);
                 throw new BadRequestException("Niepoprawny login lub hasło");
+            }
 
             await _logService.AddLog("Poprawna próba logowania", "Logowanie", user.Id);
 

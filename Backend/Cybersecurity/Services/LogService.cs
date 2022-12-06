@@ -30,16 +30,34 @@ namespace Cybersecurity.Services
 
         public async Task AddLog(string message, string action, int id)
         {
-            var log = new Log 
-            {
-                LogTime = DateTime.UtcNow,
-                Action = action,
-                UserId = id, 
-                Message = message
-            };
+            Log log;
 
-            await _logRepository.InsertAsync(log);
-            await _logRepository.SaveAsync();
+            if (id == 0)
+            {
+                log = new Log
+                {
+                    LogTime = DateTime.UtcNow,
+                    Action = action,
+                    Message = message
+                };
+
+                await _logRepository.InsertAsync(log);
+                await _logRepository.SaveAsync();
+            }
+            else
+            {
+                log = new Log
+                {
+                    LogTime = DateTime.UtcNow,
+                    Action = action,
+                    UserId = id,
+                    Message = message
+                };
+
+                await _logRepository.InsertAsync(log);
+                await _logRepository.SaveAsync();
+            }
+
         }
     }
 }
