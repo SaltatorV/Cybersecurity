@@ -83,21 +83,6 @@ namespace Cybersecurity.Services
             await _userRepository.SaveAsync();
         }
 
-        public async Task AdminUpdateUser(int id, AdminUpdateUserDto adminUpdateDto)
-        {
-            var existingUser = await _userRepository.GetByIdAsync(id);
-
-            if (existingUser is null)
-                throw new NotFoundException("User not found");
-
-            var user = _mapper.Map(adminUpdateDto, existingUser);
-
-            user.PasswordExpire = DateTime.UtcNow.AddDays(adminUpdateDto.DayExpire);
-
-            await _userRepository.UpdateAsync(user);
-            await _userRepository.SaveAsync();
-        }
-
         public async Task ChangePassword(int id, ChangePasswordDto changePasswordDto)
         {
             var existingUser = await _userRepository.GetByIdAsync(id);
@@ -158,16 +143,6 @@ namespace Cybersecurity.Services
             var role = await _roleRepository.GetAllAsync();
 
             var userDto = _mapper.Map<UserDto>(user);
-
-            return userDto;
-        }
-
-        public async Task<AdminUserDto> AdminGetUser(int id)
-        {
-            var user = await _userRepository.GetByIdAsync(id);
-            var role = await _roleRepository.GetAllAsync();
-
-            var userDto = _mapper.Map<AdminUserDto>(user);
 
             return userDto;
         }

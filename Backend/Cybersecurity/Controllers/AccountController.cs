@@ -70,15 +70,6 @@ namespace Cybersecurity.Controllers
             return Ok();
         }
 
-        [HttpPut("adminupdate/{id}")]
-        [Authorize(Roles = "Admin,User")]
-        public async Task<IActionResult> AdminUpdateUser([FromRoute] int id, [FromBody] AdminUpdateUserDto adminUpdateDto)
-        {
-            await _accountService.AdminUpdateUser(id, adminUpdateDto);
-
-            return Ok();
-        }
-
         [HttpPut("password/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> ChangePassword([FromRoute] int id, [FromBody] ChangePasswordDto changePasswordDto)
@@ -104,20 +95,6 @@ namespace Cybersecurity.Controllers
         public async Task<IActionResult> GetUser([FromRoute] int id)
         {
             var user = await _accountService.GetUser(id);
-
-            if (user is null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
-        }
-
-        [HttpGet("adminuser/{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AdminGetUser([FromRoute] int id)
-        {
-            var user = await _accountService.AdminGetUser(id);
 
             if (user is null)
             {

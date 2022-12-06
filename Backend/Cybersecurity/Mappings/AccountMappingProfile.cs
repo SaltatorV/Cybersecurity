@@ -10,14 +10,10 @@ namespace Cybersecurity.Mappings
         {
             CreateMap<RegisterUserDto, User>();
             CreateMap<UpdateUserDto, User>();
-            CreateMap<AdminUpdateUserDto, User>();
             CreateMap<ChangePasswordDto, User>();
             CreateMap<LoginUserDto, User>();
 
             CreateMap<User, UserDto>()
-                .ForMember(u => u.RoleName, c => c.MapFrom(r => r.Role.Name));
-
-            CreateMap<User, AdminUserDto>()
                 .ForMember(u => u.RoleName, c => c.MapFrom(r => r.Role.Name));
 
             CreateMap<Role, RoleDto>();

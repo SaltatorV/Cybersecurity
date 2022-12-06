@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Cybersecurity.Entities;
-using Cybersecurity.Models.DTO.Log;
+using Cybersecurity.Models.DTO;
 
 namespace Cybersecurity.Mappings
 {

@@ -1,4 +1,4 @@
-﻿using Cybersecurity.Models.DTO.Log;
+﻿using Cybersecurity.Models.DTO;
 
 namespace Cybersecurity.Interfaces.Services
 {

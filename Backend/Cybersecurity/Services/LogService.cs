@@ -3,7 +3,6 @@ using Cybersecurity.Entities;
 using Cybersecurity.Interfaces.Repositories;
 using Cybersecurity.Interfaces.Services;
 using Cybersecurity.Models.DTO;
-using Cybersecurity.Models.DTO.Log;
 
 namespace Cybersecurity.Services
 {
