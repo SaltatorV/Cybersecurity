@@ -1,4 +1,4 @@
-#Instalacja Bazy Danych
+# Instalacja Bazy Danych
 
 docker pull postgres
 docker run --name pgsql-dev -e POSTGRES_PASSWORD=cybersecurity -p 5433:5432 -d postgres
