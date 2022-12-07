@@ -36,12 +36,14 @@ namespace Cybersecurity.Authentication
             return await Task.FromResult(tokenHandler.WriteToken(token));
         }
 
-        public async Task<string> GetIdFromClaim(string jwt)
+        public async Task<int> GetIdFromClaim(string jwt)
         {
             var handler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = handler.ReadJwtToken(jwt);
 
-            return await Task.FromResult(jwtSecurityToken.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value);
+            var userId = Convert.ToInt32(jwtSecurityToken.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value);
+
+            return await Task.FromResult(userId);
         }
     }
 }

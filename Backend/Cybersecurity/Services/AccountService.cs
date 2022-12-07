@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Cybersecurity.Authentication;
 using Cybersecurity.Entities;
 using Cybersecurity.Exceptions;
 using Cybersecurity.Interfaces.Repositories;
 using Cybersecurity.Interfaces.Services;
 using Cybersecurity.Models.DTO;
+using Cybersecurity.Models.Validator;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Win32;
 
@@ -18,9 +21,13 @@ namespace Cybersecurity.Services
         private readonly IPasswordHasher<OldPassword> _oldPasswordHasher;
         private readonly IMapper _mapper;
         private readonly ILogService _logService;
+        private readonly IHttpContextAccessor _accessor;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IValidator<RegisterUserDto> _validator;
 
         public AccountService(IGenericRepository<User> userRepository, IPasswordHasher<User> passwordHasher, IPasswordHasher<OldPassword> oldPasswordHasher,
-            IMapper mapper, IGenericRepository<Role> roleRepository, IGenericRepository<OldPassword> oldPasswordRepository, ILogService logService)
+            IMapper mapper, IGenericRepository<Role> roleRepository, IGenericRepository<OldPassword> oldPasswordRepository, ILogService logService, 
+            IHttpContextAccessor accessor, IAuthenticationService authenticationService, IValidator<RegisterUserDto> validator)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
@@ -29,11 +36,24 @@ namespace Cybersecurity.Services
             _roleRepository = roleRepository;
             _oldPasswordRepository = oldPasswordRepository;
             _logService = logService;
+            _accessor = accessor;
+            _authenticationService = authenticationService;
+            _validator = validator;
         }
 
-        public async Task RegisterUser(RegisterUserDto registerDto, string userChangerId)
+        public async Task RegisterUser(RegisterUserDto registerDto)
         {
-            
+            var token = _accessor.HttpContext.Request.Cookies["jwt"];
+            var userId = await _authenticationService.GetIdFromClaim(token);
+            var validationResult = _validator.Validate(registerDto);
+
+            if (!validationResult.IsValid)
+            {
+                await _logService.AddLog($"Rejestracja użytkownika {registerDto.Login} nie udała się", "Rejestracja", userId);
+                throw new BadRequestException("Walidacja nie udana");
+
+            }
+
             var register = _mapper.Map<User>(registerDto);
 
             var hashedPassword = _passwordHasher.HashPassword(register, register.Password);
@@ -42,13 +62,13 @@ namespace Cybersecurity.Services
             register.PasswordExpire = DateTime.UtcNow.AddDays(30);
             register.IsPasswordExpire = false;
 
-            await _logService.AddLog($"Rejestracja użytkownika {registerDto.Login}", "Logowanie", Convert.ToInt32(userChangerId));
+            await _logService.AddLog($"Rejestracja użytkownika {registerDto.Login}", "Rejestracja", userId);
 
             await _userRepository.InsertAsync(register);
             await _userRepository.SaveAsync();
         }
 
-        public async Task<UserDto> LoginUser(LoginUserDto loginDto)
+        public async Task<int> LoginUser(LoginUserDto loginDto)
         {
             var user = await _userRepository.GetByPredicateAsync(u => u.Login == loginDto.Login);
 
@@ -70,7 +90,31 @@ namespace Cybersecurity.Services
 
             await _logService.AddLog("Poprawna próba logowania", "Logowanie", user.Id);
 
-            return _mapper.Map<UserDto>(user);
+            if (user.IsPasswordExpire)
+            {
+                _accessor.HttpContext.Response.Cookies.Append("changePassword", user.Id.ToString(), new CookieOptions { });
+                throw new BadRequestException("Należy zmienić hało");
+            }
+
+            var token = await _authenticationService.Generate(user.Id, role.Name);
+
+            _accessor.HttpContext.Response.Cookies.Append("jwt", token, new CookieOptions { });
+            _accessor.HttpContext.Response.Cookies.Append("login", "true", new CookieOptions { });
+
+            return user.RoleId;
+        }
+
+        public async Task Logout()
+        {
+            var jwt = _accessor.HttpContext.Request.Cookies["jwt"];
+            var userId = await _authenticationService.GetIdFromClaim(jwt);
+
+            await _logService.AddLog("Wylogowanie użytkownika", "Wylgowanie", userId);
+
+            _accessor.HttpContext.Response.Cookies.Delete("jwt");
+            _accessor.HttpContext.Response.Cookies.Delete("login");
+
+            await Task.CompletedTask;
         }
 
         public async Task UpdateUser(int id, UpdateUserDto updateDto)
@@ -134,6 +178,8 @@ namespace Cybersecurity.Services
         {
             var users = await _userRepository.GetAllAsync();
             var roles = await _roleRepository.GetAllAsync();
+
+            Console.WriteLine(_accessor.HttpContext.Request.Cookies["jwt"]);
 
             var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
 

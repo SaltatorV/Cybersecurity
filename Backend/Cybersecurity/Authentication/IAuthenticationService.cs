@@ -3,6 +3,6 @@
     public interface IAuthenticationService
     {
         Task<string> Generate(int userId, string roleName);
-        Task<string> GetIdFromClaim(string jwt);
+        Task<int> GetIdFromClaim(string jwt);
     }
 }

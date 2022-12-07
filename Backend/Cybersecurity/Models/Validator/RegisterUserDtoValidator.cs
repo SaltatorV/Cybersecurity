@@ -4,12 +4,13 @@ using Cybersecurity.Interfaces.Repositories;
 using Cybersecurity.Models.DTO;
 using FluentValidation;
 using System.Text.RegularExpressions;
+using Cybersecurity.Interfaces.Services;
 
 namespace Cybersecurity.Models.Validator
 {
     public class RegisterUserDtoValidator : AbstractValidator<RegisterUserDto>
     {
-        public RegisterUserDtoValidator(IGenericRepository<Role> roleRepository)
+        public RegisterUserDtoValidator(IGenericRepository<Role> roleRepository, ILogService logService)
         {
             RuleFor(u => u.Login)
                 .NotEmpty();

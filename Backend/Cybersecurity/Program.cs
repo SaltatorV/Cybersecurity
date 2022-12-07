@@ -5,6 +5,7 @@ using Cybersecurity.Entities;
 using Cybersecurity.Interfaces.Repositories;
 using Cybersecurity.Interfaces.Services;
 using Cybersecurity.Middleware;
+using Cybersecurity.Models.DTO;
 using Cybersecurity.Models.Validator;
 using Cybersecurity.Repositories;
 using Cybersecurity.Services;
@@ -52,10 +53,10 @@ builder.Services.AddAuthentication(option =>
 
 builder.Services.AddControllers();
 
-builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
-builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
+
+builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
