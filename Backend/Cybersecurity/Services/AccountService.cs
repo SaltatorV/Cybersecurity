@@ -23,11 +23,14 @@ namespace Cybersecurity.Services
         private readonly ILogService _logService;
         private readonly IHttpContextAccessor _accessor;
         private readonly IAuthenticationService _authenticationService;
-        private readonly IValidator<RegisterUserDto> _validator;
+        private readonly IValidator<RegisterUserDto> _registerDtoValidator;
+        private readonly IValidator<ChangePasswordDto> _changePasswordDtoValidator;
+        private readonly IValidator<UpdateUserDto> _updateDtoValidator;
 
         public AccountService(IGenericRepository<User> userRepository, IPasswordHasher<User> passwordHasher, IPasswordHasher<OldPassword> oldPasswordHasher,
             IMapper mapper, IGenericRepository<Role> roleRepository, IGenericRepository<OldPassword> oldPasswordRepository, ILogService logService, 
-            IHttpContextAccessor accessor, IAuthenticationService authenticationService, IValidator<RegisterUserDto> validator)
+            IHttpContextAccessor accessor, IAuthenticationService authenticationService, IValidator<RegisterUserDto> registerDtoValidator,
+            IValidator<ChangePasswordDto> changePasswordDtoValidator, IValidator<UpdateUserDto> updateDtoValidator)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
@@ -38,14 +41,16 @@ namespace Cybersecurity.Services
             _logService = logService;
             _accessor = accessor;
             _authenticationService = authenticationService;
-            _validator = validator;
+            _registerDtoValidator = registerDtoValidator;
+            _changePasswordDtoValidator = changePasswordDtoValidator;
+            _updateDtoValidator = updateDtoValidator;
         }
 
         public async Task RegisterUser(RegisterUserDto registerDto)
         {
             var token = _accessor.HttpContext.Request.Cookies["jwt"];
             var userId = await _authenticationService.GetIdFromClaim(token);
-            var validationResult = _validator.Validate(registerDto);
+            var validationResult = _registerDtoValidator.Validate(registerDto);
 
             if (!validationResult.IsValid)
             {
@@ -119,12 +124,25 @@ namespace Cybersecurity.Services
 
         public async Task UpdateUser(int id, UpdateUserDto updateDto)
         {
+            var jwt = _accessor.HttpContext.Request.Cookies["jwt"];
+            var userId = await _authenticationService.GetIdFromClaim(jwt);
+            var validationResult = _updateDtoValidator.Validate(updateDto);
+
+            if (!validationResult.IsValid)
+            {
+                await _logService.AddLog($"Zmiana danych użytkownika {updateDto.Login} nie udała się", "Edycja", userId);
+                throw new BadRequestException("Walidacja nie udana");
+
+            }
+
             var existingUser = await _userRepository.GetByIdAsync(id);
 
             if (existingUser is null)
                 throw new NotFoundException("User not found");
 
             var user = _mapper.Map(updateDto, existingUser);
+
+            await _logService.AddLog($"Zmiana danych użytkownika {existingUser.Login}", "Edycja", userId);
 
             await _userRepository.UpdateAsync(user);
             await _userRepository.SaveAsync();

@@ -14,7 +14,7 @@ namespace Cybersecurity.Models.Validator
                 .NotEmpty();
 
             RuleFor(u => new { u.Id, u.Login })
-                .Custom((value, context) =>
+                .Must((value, context) =>
                 {
                     var existingUser = userRepository.ExistAsync(u => u.Login == value.Login).Result;
 
@@ -24,9 +24,11 @@ namespace Cybersecurity.Models.Validator
 
                         if (existingLogin.Id != value.Id)
                         {
-                            throw new BadRequestException("Login zajęty");
+                            return false;
                         }
                     }
+
+                    return true;
                 });
         }
     }
