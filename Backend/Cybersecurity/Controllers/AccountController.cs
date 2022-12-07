@@ -24,7 +24,16 @@ namespace Cybersecurity.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDto registerDto)
         {
-            await _accountService.RegisterUser(registerDto);
+            var jwt = Request.Cookies["jwt"];
+
+            string userChangerId = "0";
+
+            if (jwt != null)
+            {
+                userChangerId = await _authenticationService.GetIdFromClaim(jwt);  
+            } 
+
+            await _accountService.RegisterUser(registerDto, userChangerId);
 
             return Ok("Ok");
         }
@@ -41,7 +50,7 @@ namespace Cybersecurity.Controllers
                 return BadRequest("Należy zmienić hało");
             }
 
-            var token = _authenticationService.Generate(user.Id, user.RoleName);
+            var token = await _authenticationService.Generate(user.Id, user.RoleName);
 
             Response.Cookies.Append("jwt", token, new CookieOptions { });
             Response.Cookies.Append("login", "true", new CookieOptions { });
@@ -120,6 +129,14 @@ namespace Cybersecurity.Controllers
             await _accountService.DeleteUser(id);
 
             return Ok("succes");
+        }    
+        
+        [HttpGet("test")]
+        public void Test()
+        {
+            var jwt = Request.Cookies["jwt"];
+
+            Console.WriteLine(_authenticationService.GetIdFromClaim(jwt).Result);
         }
     }
 }

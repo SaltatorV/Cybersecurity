@@ -2,6 +2,7 @@
 {
     public interface IAuthenticationService
     {
-        string Generate(int userId, string roleName);
+        Task<string> Generate(int userId, string roleName);
+        Task<string> GetIdFromClaim(string jwt);
     }
 }

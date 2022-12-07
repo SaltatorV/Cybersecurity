@@ -13,7 +13,7 @@ namespace Cybersecurity.Authentication
             _authenticationSettings = authenticationSettings;
         }
 
-        public string Generate(int userId, string roleName)
+        public async Task<string> Generate(int userId, string roleName)
         {
             var claims = new List<Claim>()
             {
@@ -33,7 +33,15 @@ namespace Cybersecurity.Authentication
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            return tokenHandler.WriteToken(token);
+            return await Task.FromResult(tokenHandler.WriteToken(token));
+        }
+
+        public async Task<string> GetIdFromClaim(string jwt)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(jwt);
+
+            return await Task.FromResult(jwtSecurityToken.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier).Value);
         }
     }
 }

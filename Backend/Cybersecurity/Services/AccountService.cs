@@ -31,8 +31,9 @@ namespace Cybersecurity.Services
             _logService = logService;
         }
 
-        public async Task RegisterUser(RegisterUserDto registerDto)
+        public async Task RegisterUser(RegisterUserDto registerDto, string userChangerId)
         {
+            
             var register = _mapper.Map<User>(registerDto);
 
             var hashedPassword = _passwordHasher.HashPassword(register, register.Password);
@@ -40,6 +41,8 @@ namespace Cybersecurity.Services
             register.Password = hashedPassword;
             register.PasswordExpire = DateTime.UtcNow.AddDays(30);
             register.IsPasswordExpire = false;
+
+            await _logService.AddLog($"Rejestracja użytkownika {registerDto.Login}", "Logowanie", Convert.ToInt32(userChangerId));
 
             await _userRepository.InsertAsync(register);
             await _userRepository.SaveAsync();

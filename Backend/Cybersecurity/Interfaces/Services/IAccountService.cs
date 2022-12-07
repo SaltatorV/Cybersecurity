@@ -4,7 +4,7 @@ namespace Cybersecurity.Interfaces.Services
 {
     public interface IAccountService
     {
-        Task RegisterUser(RegisterUserDto registerDto);
+        Task RegisterUser(RegisterUserDto registerDto, string userChangerId);
         Task<UserDto> LoginUser(LoginUserDto loginDto);
         Task UpdateUser(int id, UpdateUserDto updateDto);
         Task ChangePassword(int id, ChangePasswordDto changePasswordDto);
