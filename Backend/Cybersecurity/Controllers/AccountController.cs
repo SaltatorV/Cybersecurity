@@ -13,27 +13,29 @@ namespace Cybersecurity.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly IAuthenticationService _authenticationService;
+        private readonly ILogService _logService;
 
-        public AccountController(IAccountService accountService, IAuthenticationService authenticationService)
+        public AccountController(IAccountService accountService, IAuthenticationService authenticationService, ILogService logService)
         {
             _accountService = accountService;
             _authenticationService = authenticationService;
+            _logService = logService;
         }
 
         [HttpPost("register")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDto registerDto)
         {
             var jwt = Request.Cookies["jwt"];
 
-            string userChangerId = "0";
+            string userId = "0";
 
             if (jwt != null)
             {
-                userChangerId = await _authenticationService.GetIdFromClaim(jwt);  
+                userId = await _authenticationService.GetIdFromClaim(jwt);  
             } 
 
-            await _accountService.RegisterUser(registerDto, userChangerId);
+            await _accountService.RegisterUser(registerDto, userId);
 
             return Ok("Ok");
         }
@@ -62,6 +64,12 @@ namespace Cybersecurity.Controllers
         [Authorize(Roles = "Admin,User")]
         public async Task<IActionResult> Logout()
         {
+            var jwt = Request.Cookies["jwt"];
+
+            var userId = _authenticationService.GetIdFromClaim(jwt);
+
+            await _logService.AddLog("Wylogowanie użytkownika", "Wylgowanie", Convert.ToInt32(userId));
+
             Response.Cookies.Delete("jwt");
             Response.Cookies.Delete("login");
 
@@ -75,6 +83,10 @@ namespace Cybersecurity.Controllers
         public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] UpdateUserDto updateDto)
         {
             await _accountService.UpdateUser(id, updateDto);
+
+            var jwt = Request.Cookies["jwt"];
+
+            var userId = _authenticationService.GetIdFromClaim(jwt);
 
             return Ok();
         }

@@ -26,11 +26,11 @@ namespace Cybersecurity.BackgroundService
 
         private async void DoWork(object? state)
         {
-            var _userRepository = _factory.CreateScope().ServiceProvider.GetRequiredService<IGenericRepository<User>>();
+            var userRepository = _factory.CreateScope().ServiceProvider.GetRequiredService<IGenericRepository<User>>();
 
             var count = Interlocked.Increment(ref executionCount);
 
-            var users = await _userRepository.GetAllAsync();
+            var users = await userRepository.GetAllAsync();
 
             foreach(var item in users)
             {
@@ -38,8 +38,8 @@ namespace Cybersecurity.BackgroundService
                 {
                     item.IsPasswordExpire = true;
 
-                    await _userRepository.UpdateAsync(item);
-                    await _userRepository.SaveAsync();
+                    await userRepository.UpdateAsync(item);
+                    await userRepository.SaveAsync();
                 }
             }
 
