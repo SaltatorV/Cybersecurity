@@ -225,10 +225,18 @@ namespace Cybersecurity.Services
 
         public async Task DeleteUser(int id)
         {
+            var jwt = _accessor.HttpContext.Request.Cookies["jwt"];
+            var userId = await _authenticationService.GetIdFromClaim(jwt);
+
             var existingUser = await _userRepository.GetByIdAsync(id);
 
             if (existingUser is null)
+            {
+                await _logService.AddLog($"Usunięcie użytkownika {existingUser.Login} nie udało się", "Usunięcie", userId);
                 throw new NotFoundException("Nie istnieje taki użytkownik");
+            }
+
+            await _logService.AddLog($"Usunięcie użytkownika {existingUser.Login}", "Usunięcie", userId);
 
             await _userRepository.DeleteAsync(id);
             await _userRepository.SaveAsync();
