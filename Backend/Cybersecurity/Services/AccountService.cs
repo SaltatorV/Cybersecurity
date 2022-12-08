@@ -128,17 +128,22 @@ namespace Cybersecurity.Services
             var userId = await _authenticationService.GetIdFromClaim(jwt);
             var validationResult = _updateDtoValidator.Validate(updateDto);
 
+            var existingUser = await _userRepository.GetByIdAsync(id);
+
+            if (existingUser is null)
+            {
+                await _logService.AddLog($"Zmiana danych użytkownika {updateDto.Login} nie udała się", "Edycja", userId);
+
+                throw new NotFoundException("User not found");
+            }
+
+
             if (!validationResult.IsValid)
             {
                 await _logService.AddLog($"Zmiana danych użytkownika {updateDto.Login} nie udała się", "Edycja", userId);
                 throw new BadRequestException("Walidacja nie udana");
 
             }
-
-            var existingUser = await _userRepository.GetByIdAsync(id);
-
-            if (existingUser is null)
-                throw new NotFoundException("User not found");
 
             var user = _mapper.Map(updateDto, existingUser);
 
@@ -158,14 +163,14 @@ namespace Cybersecurity.Services
 
             if (existingUser is null)
             {
-                await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Edycja", userId);
+                await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Zmiana hasła", userId);
                 throw new NotFoundException("Nie znaleziono użytkownika");
 
             }
 
             if (!validationResult.IsValid)
             {
-                await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Edycja", userId);
+                await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Zmiana hasła", userId);
                 throw new BadRequestException("Walidacja nie udana");
 
             }
@@ -174,7 +179,7 @@ namespace Cybersecurity.Services
 
             if (existingUserOldPassword == PasswordVerificationResult.Failed)
             {
-                await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Edycja", userId);
+                await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Zmiana hasła", userId);
                 throw new BadHttpRequestException("Nie poprawne stare hasło");
             }
 
@@ -188,6 +193,7 @@ namespace Cybersecurity.Services
 
                     if(oldPasswordVerification == PasswordVerificationResult.Success)
                     {
+                        await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Edycja", userId);
                         throw new BadRequestException("Hasło było używane");
                     }
                 }
