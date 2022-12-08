@@ -22,13 +22,9 @@ namespace Cybersecurity.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterUserDto registerDto)
         {
+            await _accountService.RegisterUser(registerDto);
 
-
-                await _accountService.RegisterUser(registerDto);
-
-                return Ok("Ok");
-
-
+            return Ok("Ok");
         }
 
         [HttpPost("login")]

@@ -38,6 +38,13 @@ namespace Cybersecurity.Middleware
                 context.Response.StatusCode = 404;
                 await context.Response.WriteAsync(notFoundException.Message);
             }
+            catch (CookieNotFoundException cookieNotFoundException)
+            {
+                _logger.LogError(cookieNotFoundException, cookieNotFoundException.Message);
+
+                context.Response.StatusCode = 409;
+                await context.Response.WriteAsync(cookieNotFoundException.Message);
+            }
             catch (Exception e)
             {
                 _logger.LogError(e, e.Message);

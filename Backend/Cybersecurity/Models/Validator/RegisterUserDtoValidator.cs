@@ -10,10 +10,21 @@ namespace Cybersecurity.Models.Validator
 {
     public class RegisterUserDtoValidator : AbstractValidator<RegisterUserDto>
     {
-        public RegisterUserDtoValidator(IGenericRepository<Role> roleRepository, ILogService logService)
+        public RegisterUserDtoValidator(IGenericRepository<Role> roleRepository, IGenericRepository<User> userRepository, ILogService logService)
         {
-            RuleFor(u => u.Login)
-                .NotEmpty();
+            RuleFor(u => new { u.Login })
+                .NotEmpty()
+                .Must((value, context) =>
+                {
+                    var existingUser = userRepository.ExistAsync(u => u.Login == value.Login).Result;
+
+                    if (existingUser)
+                    {
+                       return false;
+                    }
+
+                    return true;
+                }).WithMessage("Istnieje użytkownik o podanym loginie");
 
             RuleFor(u => u.Password)
                 .NotEmpty()

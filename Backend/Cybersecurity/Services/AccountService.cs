@@ -5,10 +5,8 @@ using Cybersecurity.Exceptions;
 using Cybersecurity.Interfaces.Repositories;
 using Cybersecurity.Interfaces.Services;
 using Cybersecurity.Models.DTO;
-using Cybersecurity.Models.Validator;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Win32;
 
 namespace Cybersecurity.Services
 {
@@ -48,15 +46,20 @@ namespace Cybersecurity.Services
 
         public async Task RegisterUser(RegisterUserDto registerDto)
         {
-            var token = _accessor.HttpContext.Request.Cookies["jwt"];
-            var userId = await _authenticationService.GetIdFromClaim(token);
+            var jwt = _accessor.HttpContext.Request.Cookies["jwt"];
+
+            if (jwt is null)
+            {
+                throw new CookieNotFoundException("Brak cookie");
+            }
+
+            var userId = await _authenticationService.GetIdFromClaim(jwt);
             var validationResult = _registerDtoValidator.Validate(registerDto);
 
             if (!validationResult.IsValid)
             {
                 await _logService.AddLog($"Rejestracja użytkownika {registerDto.Login} nie udała się", "Rejestracja", userId);
-                throw new BadRequestException("Walidacja nie udana");
-
+                throw new BadRequestException(validationResult.ToString());
             }
 
             var register = _mapper.Map<User>(registerDto);
@@ -67,10 +70,10 @@ namespace Cybersecurity.Services
             register.PasswordExpire = DateTime.UtcNow.AddDays(30);
             register.IsPasswordExpire = false;
 
-            await _logService.AddLog($"Rejestracja użytkownika {registerDto.Login}", "Rejestracja", userId);
-
             await _userRepository.InsertAsync(register);
             await _userRepository.SaveAsync();
+            await _logService.AddLog($"Rejestracja użytkownika {registerDto.Login}", "Rejestracja", userId);
+            await Task.CompletedTask;
         }
 
         public async Task<int> LoginUser(LoginUserDto loginDto)
@@ -112,12 +115,18 @@ namespace Cybersecurity.Services
         public async Task Logout()
         {
             var jwt = _accessor.HttpContext.Request.Cookies["jwt"];
-            var userId = await _authenticationService.GetIdFromClaim(jwt);
 
-            await _logService.AddLog("Wylogowanie użytkownika", "Wylgowanie", userId);
+            if (jwt is null)
+            {
+                throw new CookieNotFoundException("Brak cookie");
+            }
+
+            var userId = await _authenticationService.GetIdFromClaim(jwt);
 
             _accessor.HttpContext.Response.Cookies.Delete("jwt");
             _accessor.HttpContext.Response.Cookies.Delete("login");
+
+            await _logService.AddLog("Wylogowanie użytkownika", "Wylgowanie", userId);
 
             await Task.CompletedTask;
         }
@@ -125,6 +134,12 @@ namespace Cybersecurity.Services
         public async Task UpdateUser(int id, UpdateUserDto updateDto)
         {
             var jwt = _accessor.HttpContext.Request.Cookies["jwt"];
+
+            if (jwt is null)
+            {
+                throw new CookieNotFoundException("Brak cookie");
+            }
+
             var userId = await _authenticationService.GetIdFromClaim(jwt);
             var validationResult = _updateDtoValidator.Validate(updateDto);
 
@@ -139,21 +154,26 @@ namespace Cybersecurity.Services
             if (!validationResult.IsValid)
             {
                 await _logService.AddLog($"Zmiana danych użytkownika {existingUser.Login} nie udała się", "Edycja", userId);
-                throw new BadRequestException("Walidacja nie udana");
+                throw new BadRequestException(validationResult.ToString());
 
             }
 
             var user = _mapper.Map(updateDto, existingUser);
-
-            await _logService.AddLog($"Zmiana danych użytkownika Id użytkownika: {existingUser.Id}", "Edycja", userId);
-
             await _userRepository.UpdateAsync(user);
             await _userRepository.SaveAsync();
+            await _logService.AddLog($"Zmiana danych użytkownika Id użytkownika: {user.Id}", "Edycja", userId);
+            await Task.CompletedTask;
         }
 
         public async Task ChangePassword(int id, ChangePasswordDto changePasswordDto)
         {
             var jwt = _accessor.HttpContext.Request.Cookies["jwt"];
+
+            if (jwt is null)
+            {
+                throw new CookieNotFoundException("Brak cookie");
+            }
+
             var userId = await _authenticationService.GetIdFromClaim(jwt);
             var validationResult = _changePasswordDtoValidator.Validate(changePasswordDto);
 
@@ -161,7 +181,7 @@ namespace Cybersecurity.Services
 
             if (existingUser is null)
             {
-                await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Zmiana hasła", userId);
+                await _logService.AddLog($"Zmiana hasła użytkownika {changePasswordDto.UserId} nie udała się", "Zmiana hasła", userId);
                 throw new NotFoundException("Nie znaleziono użytkownika");
 
             }
@@ -169,7 +189,7 @@ namespace Cybersecurity.Services
             if (!validationResult.IsValid)
             {
                 await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Zmiana hasła", userId);
-                throw new BadRequestException("Walidacja nie udana");
+                throw new BadRequestException(validationResult.ToString());
 
             }
 
@@ -191,7 +211,7 @@ namespace Cybersecurity.Services
 
                     if(oldPasswordVerification == PasswordVerificationResult.Success)
                     {
-                        await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Edycja", userId);
+                        await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Zmiana hasła", userId);
                         throw new BadRequestException("Hasło było używane");
                     }
                 }
@@ -212,14 +232,14 @@ namespace Cybersecurity.Services
             await _oldPasswordRepository.InsertAsync(oldPassword);
             await _oldPasswordRepository.SaveAsync();
             await _userRepository.SaveAsync();
+            await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login}", "Zmiana hasła", userId);
+            await Task.CompletedTask;
         }
 
         public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
             var users = await _userRepository.GetAllAsync();
             var roles = await _roleRepository.GetAllAsync();
-
-            Console.WriteLine(_accessor.HttpContext.Request.Cookies["jwt"]);
 
             var usersDto = _mapper.Map<IEnumerable<UserDto>>(users);
 
@@ -248,20 +268,25 @@ namespace Cybersecurity.Services
         public async Task DeleteUser(int id)
         {
             var jwt = _accessor.HttpContext.Request.Cookies["jwt"];
+
+            if(jwt is null)
+            {
+                throw new CookieNotFoundException("Brak cookie");
+            }
+
             var userId = await _authenticationService.GetIdFromClaim(jwt);
 
             var existingUser = await _userRepository.GetByIdAsync(id);
 
             if (existingUser is null)
             {
-                await _logService.AddLog($"Usunięcie użytkownika {existingUser.Login} nie udało się", "Usunięcie", userId);
+                await _logService.AddLog($"Usunięcie użytkownika {id} nie udało się", "Usunięcie", userId);
                 throw new NotFoundException("Nie istnieje taki użytkownik");
             }
 
-            await _logService.AddLog($"Usunięcie użytkownika {existingUser.Login}", "Usunięcie", userId);
-
             await _userRepository.DeleteAsync(id);
             await _userRepository.SaveAsync();
+            await _logService.AddLog($"Usunięcie użytkownika {existingUser.Login}", "Usunięcie", userId);
             await Task.CompletedTask;
         }
     }
