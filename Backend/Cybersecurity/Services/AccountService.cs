@@ -183,14 +183,12 @@ namespace Cybersecurity.Services
             {
                 await _logService.AddLog($"Zmiana hasła użytkownika {changePasswordDto.UserId} nie udała się", "Zmiana hasła", userId);
                 throw new NotFoundException("Nie znaleziono użytkownika");
-
             }
 
             if (!validationResult.IsValid)
             {
                 await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Zmiana hasła", userId);
                 throw new BadRequestException(validationResult.ToString());
-
             }
 
             var existingUserOldPassword = _passwordHasher.VerifyHashedPassword(existingUser, existingUser.Password, changePasswordDto.OldPassword);
