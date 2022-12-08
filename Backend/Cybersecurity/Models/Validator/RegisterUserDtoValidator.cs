@@ -12,7 +12,7 @@ namespace Cybersecurity.Models.Validator
     {
         public RegisterUserDtoValidator(IGenericRepository<Role> roleRepository, IGenericRepository<User> userRepository, ILogService logService)
         {
-            RuleFor(u => new { u.Login })
+            RuleFor(u => u.Login )
                 .NotEmpty()
                 .Must((value, context) =>
                 {
