@@ -150,15 +150,33 @@ namespace Cybersecurity.Services
 
         public async Task ChangePassword(int id, ChangePasswordDto changePasswordDto)
         {
+            var jwt = _accessor.HttpContext.Request.Cookies["jwt"];
+            var userId = await _authenticationService.GetIdFromClaim(jwt);
+            var validationResult = _changePasswordDtoValidator.Validate(changePasswordDto);
+
             var existingUser = await _userRepository.GetByIdAsync(id);
 
             if (existingUser is null)
+            {
+                await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Edycja", userId);
                 throw new NotFoundException("Nie znaleziono użytkownika");
+
+            }
+
+            if (!validationResult.IsValid)
+            {
+                await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Edycja", userId);
+                throw new BadRequestException("Walidacja nie udana");
+
+            }
 
             var existingUserOldPassword = _passwordHasher.VerifyHashedPassword(existingUser, existingUser.Password, changePasswordDto.OldPassword);
 
             if (existingUserOldPassword == PasswordVerificationResult.Failed)
+            {
+                await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Edycja", userId);
                 throw new BadHttpRequestException("Nie poprawne stare hasło");
+            }
 
             var oldPasswords = await _oldPasswordRepository.GetAllAsync();
 
