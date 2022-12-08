@@ -3,6 +3,7 @@ using System;
 using Cybersecurity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Cybersecurity.Migrations
 {
     [DbContext(typeof(CybersecurityDbContext))]
-    partial class CybersecurityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221208205348_UpdateUserTableSessionAndLock")]
+    partial class UpdateUserTableSessionAndLock
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,10 +116,10 @@ namespace Cybersecurity.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("FailLoginCounter")
+                    b.Property<int?>("FailLoginCounter")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("IsLoginLockOn")
+                    b.Property<bool?>("IsLoginLockOn")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsPasswordExpire")
@@ -128,7 +131,7 @@ namespace Cybersecurity.Migrations
                     b.Property<DateTime?>("LoginLockOnTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("MaxFailLogin")
+                    b.Property<int?>("MaxFailLogin")
                         .HasColumnType("integer");
 
                     b.Property<string>("Password")

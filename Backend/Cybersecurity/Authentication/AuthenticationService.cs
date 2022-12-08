@@ -13,7 +13,7 @@ namespace Cybersecurity.Authentication
             _authenticationSettings = authenticationSettings;
         }
 
-        public async Task<string> Generate(int userId, string roleName)
+        public async Task<string> Generate(int userId, string roleName, int sessionTime)
         {
             var claims = new List<Claim>()
             {

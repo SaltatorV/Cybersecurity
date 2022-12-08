@@ -46,7 +46,7 @@ namespace Cybersecurity.Controllers
         }
 
         [HttpPut("update/{id}")]
-        [Authorize(Roles = "Admin,User")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] UpdateUserDto updateDto)
         {
             await _accountService.UpdateUser(id, updateDto);
@@ -55,7 +55,7 @@ namespace Cybersecurity.Controllers
         }
 
         [HttpPut("password/{id}")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ChangePassword([FromRoute] int id, [FromBody] ChangePasswordDto changePasswordDto)
         {
             await _accountService.ChangePassword(id, changePasswordDto);

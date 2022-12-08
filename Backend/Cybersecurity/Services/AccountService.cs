@@ -71,6 +71,12 @@ namespace Cybersecurity.Services
             register.PasswordExpire = DateTime.UtcNow.AddDays(30);
             register.IsPasswordExpire = false;
 
+            register.MaxFailLogin = 5;
+            register.FailLoginCounter = 0;
+            register.IsLoginLockOn = false;
+
+            register.SessionTime = 15;
+            
             await _userRepository.InsertAsync(register);
             await _userRepository.SaveAsync();
             await _logService.AddLog($"Rejestracja użytkownika {registerDto.Login}", "Rejestracja", userId);
@@ -87,12 +93,29 @@ namespace Cybersecurity.Services
                 throw new BadRequestException("Niepoprawny login lub hasło");
             }
 
+            if (user.IsLoginLockOn)
+            {
+                throw new ForbiddenException(user.LoginLockOnTime.ToString());
+            }
+
             var role = await _roleRepository.GetByIdAsync(user.RoleId);
 
             var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password);
 
             if (passwordVerification == PasswordVerificationResult.Failed)
             {
+                user.FailLoginCounter++;
+
+                if (user.FailLoginCounter == user.MaxFailLogin)
+                {
+                    user.IsLoginLockOn = true;
+                    user.FailLoginCounter = 0;
+                    user.LoginLockOnTime = DateTime.UtcNow.AddMinutes(15);
+                }
+
+                await _userRepository.UpdateAsync(user);
+                await _userRepository.SaveAsync();
+
                 await _logService.AddLog("Wpisane złe hasło", "Logowanie", user.Id);
                 throw new BadRequestException("Niepoprawny login lub hasło");
             }
@@ -105,10 +128,10 @@ namespace Cybersecurity.Services
                 throw new BadRequestException("Należy zmienić hało");
             }
 
-            var token = await _authenticationService.Generate(user.Id, role.Name);
+            var token = await _authenticationService.Generate(user.Id, role.Name, user.SessionTime);
 
-            _accessor.HttpContext.Response.Cookies.Append("jwt", token, new CookieOptions { });
-            _accessor.HttpContext.Response.Cookies.Append("login", "true", new CookieOptions { });
+            _accessor.HttpContext.Response.Cookies.Append("jwt", token, new CookieOptions {Expires = DateTime.Now.AddMinutes(user.SessionTime)});
+            _accessor.HttpContext.Response.Cookies.Append("login", "true", new CookieOptions { Expires = DateTime.Now.AddMinutes(user.SessionTime)});
 
             return user.RoleId;
         }

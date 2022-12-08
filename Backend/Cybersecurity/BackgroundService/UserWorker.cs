@@ -43,6 +43,21 @@ namespace Cybersecurity.BackgroundService
                 }
             }
 
+            foreach (var item in users)
+            {
+                if (item.IsLoginLockOn)
+                {
+                    if (DateTime.Compare((DateTime)item.LoginLockOnTime, DateTime.UtcNow) < 0)
+                    {
+                        item.IsLoginLockOn = false;
+                        item.LoginLockOnTime = null;
+
+                        await userRepository.UpdateAsync(item);
+                        await userRepository.SaveAsync();
+                    }
+                }
+            }
+
             Console.WriteLine(count.ToString());
 
         }
