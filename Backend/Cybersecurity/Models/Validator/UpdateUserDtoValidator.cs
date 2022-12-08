@@ -10,10 +10,9 @@ namespace Cybersecurity.Models.Validator
     {
         public UpdateUserDtoValidator(IGenericRepository<User> userRepository)
         {
-            RuleFor(u => u.Login)
-                .NotEmpty();
 
-            RuleFor(u => new { u.Id, u.Login })
+            RuleFor(u => u.Login )
+                .NotEmpty()
                 .Must((value, context) =>
                 {
                     var existingUser = userRepository.ExistAsync(u => u.Login == value.Login).Result;
@@ -29,7 +28,7 @@ namespace Cybersecurity.Models.Validator
                     }
 
                     return true;
-                });
+                }).WithMessage("Login zajęty");
         }
     }
 }

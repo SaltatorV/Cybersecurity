@@ -12,7 +12,7 @@ namespace Cybersecurity.Models.Validator
     {
         public RegisterUserDtoValidator(IGenericRepository<Role> roleRepository, IGenericRepository<User> userRepository, ILogService logService)
         {
-            RuleFor(u => u.Login)
+            RuleFor(u => u.Login )
                 .NotEmpty()
                 .Must((value, context) =>
                 {
@@ -24,7 +24,7 @@ namespace Cybersecurity.Models.Validator
                     }
 
                     return true;
-                }).WithErrorCode("610").WithMessage("Istnieje użytkownik o podanym loginie");
+                }).WithMessage("Istnieje użytkownik o podanym loginie");
 
             RuleFor(u => u.Password)
                 .NotEmpty()

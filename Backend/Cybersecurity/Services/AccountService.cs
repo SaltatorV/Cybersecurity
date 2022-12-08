@@ -179,7 +179,6 @@ namespace Cybersecurity.Services
             {
                 await _logService.AddLog($"Zmiana danych użytkownika {existingUser.Login} nie udała się", "Edycja", userId);
                 throw new BadRequestException(validationResult.ToString());
-
             }
 
             var user = _mapper.Map(updateDto, existingUser);

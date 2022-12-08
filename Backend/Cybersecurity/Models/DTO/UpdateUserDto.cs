@@ -16,8 +16,10 @@ namespace Cybersecurity.Models.DTO
         [DefaultValue(2)]
         public int RoleId { get; set; }
 
+        [DefaultValue(15)]
         public int SessionTime { get; set; }
 
+        [DefaultValue(5)]
         public int MaxFailLogin { get; set; }
 
     }
