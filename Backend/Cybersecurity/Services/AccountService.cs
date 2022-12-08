@@ -133,21 +133,19 @@ namespace Cybersecurity.Services
             if (existingUser is null)
             {
                 await _logService.AddLog($"Zmiana danych użytkownika {updateDto.Login} nie udała się", "Edycja", userId);
-
                 throw new NotFoundException("User not found");
             }
 
-
             if (!validationResult.IsValid)
             {
-                await _logService.AddLog($"Zmiana danych użytkownika {updateDto.Login} nie udała się", "Edycja", userId);
+                await _logService.AddLog($"Zmiana danych użytkownika {existingUser.Login} nie udała się", "Edycja", userId);
                 throw new BadRequestException("Walidacja nie udana");
 
             }
 
             var user = _mapper.Map(updateDto, existingUser);
 
-            await _logService.AddLog($"Zmiana danych użytkownika {existingUser.Login}", "Edycja", userId);
+            await _logService.AddLog($"Zmiana danych użytkownika Id użytkownika: {existingUser.Id}", "Edycja", userId);
 
             await _userRepository.UpdateAsync(user);
             await _userRepository.SaveAsync();
