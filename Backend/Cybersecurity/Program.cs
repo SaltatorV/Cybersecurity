@@ -53,7 +53,6 @@ builder.Services.AddAuthentication(option =>
 
 builder.Services.AddControllers();
 
-builder.Services.AddFluentValidationClientsideAdapters();
 
 
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
@@ -83,6 +82,9 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ILogService, LogService>();
 
 builder.Services.AddHostedService<UserWorker>();
+
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 
 var app = builder.Build();
 

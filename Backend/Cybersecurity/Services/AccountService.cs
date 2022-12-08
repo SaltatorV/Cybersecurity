@@ -60,11 +60,6 @@ namespace Cybersecurity.Services
             {
                 await _logService.AddLog($"Rejestracja użytkownika {registerDto.Login} nie udała się", "Rejestracja", userId);
 
-                foreach (var item in validationResult.Errors)
-                {
-                    Console.WriteLine($"Property: {item.PropertyName} Error Code: {item.ErrorCode} Error Message: {item.ErrorMessage}");
-                }
-
                 throw new BadRequestException(validationResult.ToString());
             }
 
