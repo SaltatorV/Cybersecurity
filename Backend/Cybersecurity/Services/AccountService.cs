@@ -5,6 +5,7 @@ using Cybersecurity.Exceptions;
 using Cybersecurity.Interfaces.Repositories;
 using Cybersecurity.Interfaces.Services;
 using Cybersecurity.Models.DTO;
+using Cybersecurity.Utils;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 
@@ -118,6 +119,20 @@ namespace Cybersecurity.Services
 
                 await _logService.AddLog("Wpisane złe hasło", "Logowanie", user.Id);
                 throw new BadRequestException("Niepoprawny login lub hasło");
+            }
+
+            if(user.IsOneTimePasswordSet)
+            {
+                var oneTimePasswordVerification = _passwordHasher.VerifyHashedPassword(user, user.OneTimePassword, loginDto.OneTimePassword);
+
+                if(oneTimePasswordVerification == PasswordVerificationResult.Failed)
+                {
+                    throw new BadRequestException("Niepoprawny login lub hasło");
+                }
+
+                user.IsOneTimePasswordSet = false;
+                user.OneTimePassword = "";
+                _userRepository.UpdateAsync(user);
             }
 
             await _logService.AddLog("Poprawna próba logowania", "Logowanie", user.Id);
@@ -309,6 +324,25 @@ namespace Cybersecurity.Services
             await _userRepository.SaveAsync();
             await _logService.AddLog($"Usunięcie użytkownika {existingUser.Login}", "Usunięcie", userId);
             await Task.CompletedTask;
+        }
+
+        public async Task<string> SetOneTimePassword(int id)
+        {
+            var user = _userRepository.GetByIdAsync(id).Result;
+            string oneTimePassword = generateOneTimePassword(user.Login);
+            user.OneTimePassword = _passwordHasher.HashPassword(user, oneTimePassword);
+            user.IsOneTimePasswordSet = true;
+
+            await _userRepository.UpdateAsync(user);
+            await _userRepository.SaveAsync();
+
+            return oneTimePassword;
+        }
+
+
+        private string generateOneTimePassword(string login)
+        {
+            return OneTimePasswordGenerator.generate(login.Length);
         }
     }
 }
