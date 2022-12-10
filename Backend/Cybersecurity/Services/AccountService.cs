@@ -145,8 +145,21 @@ namespace Cybersecurity.Services
 
             var token = await _authenticationService.Generate(user.Id, role.Name, user.SessionTime);
 
-            _accessor.HttpContext.Response.Cookies.Append("jwt", token, new CookieOptions {Expires = DateTime.Now.AddMinutes(user.SessionTime)});
-            _accessor.HttpContext.Response.Cookies.Append("login", "true", new CookieOptions { Expires = DateTime.Now.AddMinutes(user.SessionTime)});
+            _accessor.HttpContext.Response.Cookies.Append("jwt", token, new CookieOptions 
+            {
+                Expires = DateTime.Now.AddMinutes(user.SessionTime),
+                Domain = "localhost",
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            });
+            _accessor.HttpContext.Response.Cookies.Append("login", user.Login, new CookieOptions 
+            {
+                Expires = DateTime.Now.AddMinutes(user.SessionTime),
+                Domain = "localhost",
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            });
 
             return user.RoleId;
         }
@@ -300,6 +313,18 @@ namespace Cybersecurity.Services
 
             return rolesDto;
         }
+
+        public async Task<int> GetRole()
+        {
+            var jwt = _accessor.HttpContext.Request.Cookies["jwt"];
+
+            var userId = await _authenticationService.GetIdFromClaim(jwt);
+
+            var user = await _userRepository.GetByIdAsync(userId);
+
+            return user.RoleId;
+        }
+
 
         public async Task DeleteUser(int id)
         {

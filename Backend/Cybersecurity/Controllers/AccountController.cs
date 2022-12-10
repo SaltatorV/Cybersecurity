@@ -97,7 +97,7 @@ namespace Cybersecurity.Controllers
             return Ok(user);
         }
 
-        [HttpGet("role")]
+        [HttpGet("roles")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetRoles()
         {
@@ -105,6 +105,16 @@ namespace Cybersecurity.Controllers
 
             return Ok(roles);
         }
+
+        [HttpGet("role")]
+        [Authorize(Roles = "Admin, User")]
+        public async Task<IActionResult> GetRole()
+        {
+            var role = await _accountService.GetRole();
+
+            return Ok(role);
+        }
+
 
         [HttpDelete("delete/{id}")]
         [Authorize(Roles = "Admin")]

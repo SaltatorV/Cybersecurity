@@ -45,5 +45,6 @@ namespace Cybersecurity.Authentication
 
             return await Task.FromResult(userId);
         }
+
     }
 }

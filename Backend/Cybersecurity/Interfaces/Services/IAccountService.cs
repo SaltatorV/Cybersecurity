@@ -12,6 +12,7 @@ namespace Cybersecurity.Interfaces.Services
         Task<IEnumerable<UserDto>> GetAllUsers();
         Task<UserDto> GetUser(int id);
         Task<IEnumerable<RoleDto>> GetRoles();
+        Task<int> GetRole();
         Task DeleteUser(int id);
         Task<string> SetOneTimePassword(int id);
     }
