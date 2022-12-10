@@ -12,13 +12,26 @@
 .content-container {
 	overflow-y: auto;
 	overflow-x: hidden;
-	height: 90vh;
 	position: relative;
 	display: flex;
-	justify-content: center;
-	align-items: center;
 }
 
 .navbar-container {
 	height: 50px;
+}
+
+.admin-panel-content {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.log-content {
+	height: 50vh;
+	border: 1px solid black;
+}
+
+.user-content {
+	height: 50vh;
+	border: 1px solid black;
 }

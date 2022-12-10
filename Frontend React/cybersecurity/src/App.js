@@ -39,7 +39,6 @@ function App() {
 				})
 				.then(res => {
 					setUserRole(res);
-					console.log(1);
 				})
 				.catch(error => console.log(error));
 		}
