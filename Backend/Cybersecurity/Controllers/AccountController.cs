@@ -65,6 +65,15 @@ namespace Cybersecurity.Controllers
             return Ok("succes");
         }
 
+        [HttpPut("password/{id}/one-time")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SetOneTimePassword([FromRoute] int id)
+        {
+            string oneTimePassword = await _accountService.SetOneTimePassword(id);
+
+            return Ok(oneTimePassword);
+        }
+
         [HttpGet("user")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUsers()

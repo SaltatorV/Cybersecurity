@@ -20,5 +20,8 @@
         public virtual ICollection<Log>? Logs { get; set; }
         public virtual ICollection<OldPassword>? OldPasswords { get; set; }
 
+        public bool IsOneTimePasswordSet { get; set; }
+        public string? OneTimePassword { get; set;}
+
     }
 }
