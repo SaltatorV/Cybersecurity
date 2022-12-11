@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as MdIcons from 'react-icons/md';
 import { Link } from 'react-router-dom';
 
-const User = () => {
+const User = ({ showEditAdd, setFormFlag, setEditId }) => {
 	const [users, setUsers] = useState([]);
 
 	const columns = [
@@ -75,10 +75,21 @@ const User = () => {
 		}
 	}, []);
 
+	const showWindowHandler = (flag, settingFlag, id) => {
+		showEditAdd(settingFlag);
+		setEditId(id);
+		setFormFlag(flag);
+	};
+
 	return (
 		<div className="user-content">
 			<div className="setting-tab">
-				<div className="tab-header"></div>
+				<div className="setting-header">
+					User
+					<Link to="#" onClick={() => showWindowHandler('add', 'user')}>
+						<MdIcons.MdOutlineAddBox />
+					</Link>
+				</div>
 				<div className="scroll-section">
 					<table cellSpacing="0">
 						<thead>
