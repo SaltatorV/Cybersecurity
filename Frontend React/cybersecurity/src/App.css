@@ -14,10 +14,12 @@
 	overflow-x: hidden;
 	position: relative;
 	display: flex;
+	background-color: #212529;
+	color: white;
 }
 
 .navbar-container {
-	height: 50px;
+	height: 56px;
 }
 
 .admin-panel-content {
@@ -28,18 +30,20 @@
 
 .logger-content {
 	height: 50vh;
-	border: 1px solid black;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
 
 .user-content {
 	height: 50vh;
-	border: 1px solid black;
+}
+
+table {
+	border: 1px solid white;
 }
 
 th,
 td {
 	padding: 5px;
-	border: 1px solid black;
+	border: 1px solid white;
 }
