@@ -51,36 +51,38 @@ const User = () => {
 	}, []);
 
 	return (
-		<div className="setting-tab">
-			<div className="tab-header"></div>
-			<div className="scroll-section">
-				<table cellSpacing="0">
-					<thead>
-						<tr>
-							{columns.map(column => (
-								<th key={column.Index}>{column.Header}</th>
-							))}
-							<th className="td-edit">Edit</th>
-						</tr>
-					</thead>
-					<tbody>
-						{users.map(item => (
-							<tr key={item.id}>
-								{columns.map(key => {
-									const value = item[key.Accessor];
-									return <td key={key.Index}>{value}</td>;
-								})}
-								<td className="td-edit">
-									<Link to="#">
-										<MdIcons.MdOutlineEditNote />
-									</Link>
-								</td>
+		<div className="user-content">
+			<div className="setting-tab">
+				<div className="tab-header"></div>
+				<div className="scroll-section">
+					<table cellSpacing="0">
+						<thead>
+							<tr>
+								{columns.map(column => (
+									<th key={column.Index}>{column.Header}</th>
+								))}
+								<th className="td-edit">Edit</th>
 							</tr>
-						))}
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							{users.map(item => (
+								<tr key={item.id}>
+									{columns.map(key => {
+										const value = item[key.Accessor];
+										return <td key={key.Index}>{value}</td>;
+									})}
+									<td className="td-edit">
+										<Link to="#">
+											<MdIcons.MdOutlineEditNote />
+										</Link>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+				<div className="tab-footer">Pagination</div>
 			</div>
-			<div className="tab-footer">Pagination</div>
 		</div>
 	);
 };
