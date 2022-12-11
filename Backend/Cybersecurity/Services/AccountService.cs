@@ -123,7 +123,7 @@ namespace Cybersecurity.Services
                     {
                         user.IsLoginLockOn = true;
                         user.FailLoginCounter = 0;
-                        user.LoginLockOnTime = DateTime.UtcNow.AddMinutes(15);
+                        user.LoginLockOnTime = DateTime.UtcNow.AddMinutes(user.SessionTime);
                     }
 
                     await _userRepository.UpdateAsync(user);
