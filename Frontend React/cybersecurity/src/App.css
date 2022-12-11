@@ -29,9 +29,17 @@
 .logger-content {
 	height: 50vh;
 	border: 1px solid black;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .user-content {
 	height: 50vh;
+	border: 1px solid black;
+}
+
+th,
+td {
+	padding: 5px;
 	border: 1px solid black;
 }

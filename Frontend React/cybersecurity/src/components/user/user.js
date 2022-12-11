@@ -8,23 +8,48 @@ const User = () => {
 	const columns = [
 		{
 			Index: 1,
-			Header: 'Id',
-			Accessor: 'id',
-		},
-		{
-			Index: 2,
 			Header: 'Login',
 			Accessor: 'login',
 		},
 		{
-			Index: 3,
+			Index: 2,
 			Header: 'Rola',
 			Accessor: 'roleName',
 		},
 		{
-			Index: 4,
+			Index: 3,
 			Header: 'IsPasswordExpire',
 			Accessor: 'isPasswordExpire',
+		},
+		{
+			Index: 4,
+			Header: 'PasswordExpire',
+			Accessor: 'passwordExpire',
+		},
+		{
+			Index: 5,
+			Header: 'MaxFailLogin',
+			Accessor: 'maxFailLogin',
+		},
+		{
+			Index: 6,
+			Header: 'IsLoginLockOn',
+			Accessor: 'isLoginLockOn',
+		},
+		{
+			Index: 7,
+			Header: 'LoginLockOnTime',
+			Accessor: 'loginLockOnTime',
+		},
+		{
+			Index: 8,
+			Header: 'SessionTime',
+			Accessor: 'sessionTime',
+		},
+		{
+			Index: 9,
+			Header: 'IsOneTimePasswordSet',
+			Accessor: 'isOneTimePasswordSet',
 		},
 	];
 
@@ -67,10 +92,15 @@ const User = () => {
 						<tbody>
 							{users.map(item => (
 								<tr key={item.id}>
-									{columns.map(key => {
-										const value = item[key.Accessor];
-										return <td key={key.Index}>{value}</td>;
-									})}
+									<td>{item.login}</td>
+									<td>{item.roleName}</td>
+									<td>{item.isPasswordExpire ? 'tak' : 'nie'}</td>
+									<td>{item.passwordExpire}</td>
+									<td>{item.maxFailLogin}</td>
+									<td>{item.isLoginLockOn ? 'tak' : 'nie'}</td>
+									<td>{item.loginLockOnTime}</td>
+									<td>{item.sessionTime}</td>
+									<td>{item.isOneTimePasswordSet ? 'tak' : 'nie'}</td>
 									<td className="td-edit">
 										<Link to="#">
 											<MdIcons.MdOutlineEditNote />
@@ -81,7 +111,7 @@ const User = () => {
 						</tbody>
 					</table>
 				</div>
-				<div className="tab-footer">Pagination</div>
+				<div className="tab-footer"></div>
 			</div>
 		</div>
 	);
