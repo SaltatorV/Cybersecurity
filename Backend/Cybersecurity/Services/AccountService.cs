@@ -84,7 +84,7 @@ namespace Cybersecurity.Services
             await Task.CompletedTask;
         }
 
-        public async Task<int> LoginUser(LoginUserDto loginDto)
+        public async Task<LoginResponseDto> LoginUser(LoginUserDto loginDto)
         {
             var user = await _userRepository.GetByPredicateAsync(u => u.Login == loginDto.Login);
 
@@ -100,7 +100,7 @@ namespace Cybersecurity.Services
             }
 
             var role = await _roleRepository.GetByIdAsync(user.RoleId);
-
+            LoginResponseDto response = new LoginResponseDto();
             if(user.IsOneTimePasswordSet)
             {
                 var oneTimePasswordVerification = _passwordHasher.VerifyHashedPassword(user, user.OneTimePassword, loginDto.Password);
@@ -109,11 +109,7 @@ namespace Cybersecurity.Services
                 {
                     throw new BadRequestException("Niepoprawny login lub hasło");
                 }
-
-                user.IsOneTimePasswordSet = false;
-                user.OneTimePassword = "";
-                _userRepository.UpdateAsync(user);
-                _userRepository.SaveAsync();
+                response._isSetOneTimePassword = true;
             }
             else
             {
@@ -136,6 +132,7 @@ namespace Cybersecurity.Services
                     await _logService.AddLog("Wpisane złe hasło", "Logowanie", user.Id);
                     throw new BadRequestException("Niepoprawny login lub hasło");
                 }
+                response._isSetOneTimePassword = false;
             }
 
             await _logService.AddLog("Poprawna próba logowania", "Logowanie", user.Id);
@@ -150,7 +147,7 @@ namespace Cybersecurity.Services
 
             _accessor.HttpContext.Response.Cookies.Append("jwt", token, new CookieOptions 
             {
-                Expires = DateTime.Now.AddMinutes(user.SessionTime),
+                Expires = DateTime.Now.AddMinutes(10),
                 Domain = "localhost",
                 HttpOnly = true,
                 Secure = true,
@@ -158,13 +155,13 @@ namespace Cybersecurity.Services
             });
             _accessor.HttpContext.Response.Cookies.Append("login", user.Login, new CookieOptions 
             {
-                Expires = DateTime.Now.AddMinutes(user.SessionTime),
+                Expires = DateTime.Now.AddMinutes(10),
                 Domain = "localhost",
                 Secure = true,
                 SameSite = SameSiteMode.Strict
             });
 
-            return user.RoleId;
+            return response;
         }
 
         public async Task Logout()

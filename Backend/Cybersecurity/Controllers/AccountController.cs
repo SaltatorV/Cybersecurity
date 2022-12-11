@@ -31,9 +31,9 @@ namespace Cybersecurity.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> LoginUser([FromBody] LoginUserDto loginDto)
         {
-            var userRole = await _accountService.LoginUser(loginDto);
+            var response = await _accountService.LoginUser(loginDto);
 
-            return Ok(userRole);
+            return Ok(response);
         }
 
         [HttpPost("logout")]
