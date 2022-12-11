@@ -54,13 +54,11 @@ namespace Cybersecurity.Controllers
             return Ok();
         }
 
-        [HttpPut("password/{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ChangePassword([FromRoute] int id, [FromBody] ChangePasswordDto changePasswordDto)
+        [HttpPost("password/change")]
+        [Authorize(Roles = "Admin, User")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
         {
-            await _accountService.ChangePassword(id, changePasswordDto);
-
-            Response.Cookies.Delete("changePassword");
+            await _accountService.ChangePassword(changePasswordDto);
 
             return Ok("succes");
         }

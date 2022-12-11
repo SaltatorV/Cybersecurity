@@ -14,7 +14,7 @@ namespace Cybersecurity.Models.Validator
             RuleFor(u => u.Password)
                 .NotEmpty()
                 .MinimumLength(8)
-                .Matches(new Regex(@"(?=[A-Za-z0-9@#$%^&+!=]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+!=]).*$"))
+                .Matches(new Regex(@"(?=[A-Za-z0-9@#$%^&+!=]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+-_!=]).*$"))
                 .WithMessage("Hasło musi posiadać przynajmniej jedną dużą literę, jeden znak specjalny, cyfre oraz mieć conajmniej 8 znaków");
 
             RuleFor(u => u.ConfirmPassword)

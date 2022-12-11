@@ -8,7 +8,7 @@ namespace Cybersecurity.Interfaces.Services
         Task<LoginResponseDto> LoginUser(LoginUserDto loginDto);
         Task Logout();
         Task UpdateUser(int id, UpdateUserDto updateDto);
-        Task ChangePassword(int id, ChangePasswordDto changePasswordDto);
+        Task ChangePassword(ChangePasswordDto changePasswordDto);
         Task<IEnumerable<UserDto>> GetAllUsers();
         Task<UserDto> GetUser(int id);
         Task<IEnumerable<RoleDto>> GetRoles();
