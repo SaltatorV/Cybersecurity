@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import * as MdIcons from 'react-icons/md';
 import { Link } from 'react-router-dom';
+import EditUserPanel from './EditUserPanel';
 
 const User = ({ showEditAdd, setFormFlag, setEditId }) => {
 	const [users, setUsers] = useState([]);
+	const [selectEditUser,setSelectEditUser] = useState('');
 
 	const columns = [
 		{
@@ -83,6 +85,7 @@ const User = ({ showEditAdd, setFormFlag, setEditId }) => {
 
 	return (
 		<div className="user-content">
+			
 			<div className="setting-tab">
 				<div className="setting-header">
 					User
@@ -114,7 +117,7 @@ const User = ({ showEditAdd, setFormFlag, setEditId }) => {
 									<td>{item.isOneTimePasswordSet ? 'tak' : 'nie'}</td>
 									<td className="td-edit">
 										<Link to="#">
-											<MdIcons.MdOutlineEditNote />
+											<MdIcons.MdOutlineEditNote onClick={()=>setSelectEditUser(item.id)}/>
 										</Link>
 									</td>
 								</tr>
@@ -124,6 +127,8 @@ const User = ({ showEditAdd, setFormFlag, setEditId }) => {
 				</div>
 				<div className="tab-footer"></div>
 			</div>
+			{(selectEditUser!=='')&&(<EditUserPanel id={selectEditUser} close={setSelectEditUser.bind(this)}/>)}
+			
 		</div>
 	);
 };
