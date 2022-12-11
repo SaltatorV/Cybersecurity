@@ -101,31 +101,11 @@ namespace Cybersecurity.Services
 
             var role = await _roleRepository.GetByIdAsync(user.RoleId);
 
-            var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password);
-
-            if (passwordVerification == PasswordVerificationResult.Failed)
-            {
-                user.FailLoginCounter++;
-
-                if (user.FailLoginCounter == user.MaxFailLogin)
-                {
-                    user.IsLoginLockOn = true;
-                    user.FailLoginCounter = 0;
-                    user.LoginLockOnTime = DateTime.UtcNow.AddMinutes(15);
-                }
-
-                await _userRepository.UpdateAsync(user);
-                await _userRepository.SaveAsync();
-
-                await _logService.AddLog("Wpisane złe hasło", "Logowanie", user.Id);
-                throw new BadRequestException("Niepoprawny login lub hasło");
-            }
-
             if(user.IsOneTimePasswordSet)
             {
-                var oneTimePasswordVerification = _passwordHasher.VerifyHashedPassword(user, user.OneTimePassword, loginDto.OneTimePassword);
+                var oneTimePasswordVerification = _passwordHasher.VerifyHashedPassword(user, user.OneTimePassword, loginDto.Password);
 
-                if(oneTimePasswordVerification == PasswordVerificationResult.Failed)
+                if (oneTimePasswordVerification == PasswordVerificationResult.Failed)
                 {
                     throw new BadRequestException("Niepoprawny login lub hasło");
                 }
@@ -133,6 +113,29 @@ namespace Cybersecurity.Services
                 user.IsOneTimePasswordSet = false;
                 user.OneTimePassword = "";
                 _userRepository.UpdateAsync(user);
+                _userRepository.SaveAsync();
+            }
+            else
+            {
+                var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password);
+
+                if (passwordVerification == PasswordVerificationResult.Failed)
+                {
+                    user.FailLoginCounter++;
+
+                    if (user.FailLoginCounter == user.MaxFailLogin)
+                    {
+                        user.IsLoginLockOn = true;
+                        user.FailLoginCounter = 0;
+                        user.LoginLockOnTime = DateTime.UtcNow.AddMinutes(15);
+                    }
+
+                    await _userRepository.UpdateAsync(user);
+                    await _userRepository.SaveAsync();
+
+                    await _logService.AddLog("Wpisane złe hasło", "Logowanie", user.Id);
+                    throw new BadRequestException("Niepoprawny login lub hasło");
+                }
             }
 
             await _logService.AddLog("Poprawna próba logowania", "Logowanie", user.Id);
