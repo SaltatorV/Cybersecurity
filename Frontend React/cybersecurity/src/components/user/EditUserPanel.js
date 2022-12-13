@@ -7,9 +7,9 @@ function EditUserPanel(props) {
   const [user, setUser] = useState();
   const [formData, setfromData] = useState([]);
   const [show, setShow] = useState(0)
-  const [select,setSelect] = useState("");
+  const [select, setSelect] = useState("");
 
-  
+
   const columns = [
     {
       Index: 1,
@@ -66,19 +66,16 @@ function EditUserPanel(props) {
   }, []);
 
   const handleChange = (e) => {
-   
- 
-    
-    if(e.target.value === "true")
-    {
+
+
+
+    if (e.target.value === "true") {
       setSelect(true);
     }
-    else if (e.target.value === "false")
-    {
+    else if (e.target.value === "false") {
       setSelect(false);
     }
-    else
-    {
+    else {
       setSelect(e.target.value);
     }
   }
@@ -90,32 +87,32 @@ function EditUserPanel(props) {
     console.log(e.target.name);
 
     var userPostEdit = {
-      Id:user.id,
-      Login:user.login,
-      IsPasswordExpire:user.isPasswordExpire,
-      DayExpire:user.DayExpire,
-      RoleId:user.RoleId,
-      SessionTime:user.SessionTime,
-      MaxFailLogin:user.MaxFailLogin
+      Id: user.id,
+      Login: user.login,
+      IsPasswordExpire: user.isPasswordExpire,
+      DayExpire: user.DayExpire,
+      RoleId: user.RoleId,
+      SessionTime: user.SessionTime,
+      MaxFailLogin: user.MaxFailLogin
     }
-    
-    
+
+
     for (const [key, value] of Object.entries(userPostEdit)) {
-        //console.log(`${key}: ${value}`);
+      //console.log(`${key}: ${value}`);
       //console.log(key);
-      if(key === e.target.name)
-      {
-        console.log("key",key);
-        console.log("value",value);
-        console.log("set Value",select)
+      if (key === e.target.name) {
+        console.log("key", key);
+        console.log("value", value);
+        console.log("set Value", select)
         console.log(userPostEdit[key]);
-        
+
         userPostEdit[key] = select;
-             
-    }}
+
+      }
+    }
     console.log(userPostEdit)
-    
-    await fetch("http://localhost:7277/api/account/update/"+user.id, {
+
+    await fetch("http://localhost:7277/api/account/update/" + user.id, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -129,15 +126,16 @@ function EditUserPanel(props) {
         return response.json();
       })
       .then((res) => {
-        window.location.href = "/";
+        if (res === 200)
+          alert("Edycja użytkownika powiodła się!");
       })
       .catch((error) => console.log(error));
-      setShow(0);
+    setShow(0);
   };
 
-  
-    
-  
+
+
+
   const edit = (name) => {
     return (<div>
       <form onSubmit={handleSubmit} name={name}>
@@ -150,14 +148,14 @@ function EditUserPanel(props) {
   }
   const editSelect = (name) => {
     return (<div>
-    <form onSubmit={handleSubmit} name={name}>
-    <select onChange={handleChange} >
-    <option value="">--Please choose an option--</option>
-    <option value={true} >true</option>
-    <option value={false}>false</option>
-</select>
-<input type="submit" value="Submit" />
-</form>
+      <form onSubmit={handleSubmit} name={name}>
+        <select onChange={handleChange} >
+          <option value="">--Please choose an option--</option>
+          <option value={true} >true</option>
+          <option value={false}>false</option>
+        </select>
+        <input type="submit" value="Submit" />
+      </form>
     </div>)
   }
 
