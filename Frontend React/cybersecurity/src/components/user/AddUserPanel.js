@@ -75,24 +75,40 @@ function AddUserPanel() {
 
             <div>
                 <div className="scroll-section">
-                    <form onSubmit={handleSubmit} name="login">
-                        <label>
-                            Login:
-                            <input value={formData.login} type="text" name="login" onChange={handleChange} />
-                        </label>
-                        <label>
-                            Password:
-                            <input value={formData.password} name="password" type="password" onChange={handleChange} />
-                        </label>
-                        <label>
-                            ConfirmPassword:
-                            <input value={formData.confirmPassword} type="password" name="confirmPassword" onChange={handleChange} />
-                        </label>
-                        <label>
-                            RoleId:
-                            <input value={formData.roleid} type="text" name="roleId" onChange={handleChange} />
-                        </label>
-                        <input type="submit" value="Submit" />
+                <form onSubmit={handleSubmit} name="login">
+                    <table cellSpacing="0">
+                        <thead>
+                            <tr>
+                                {columns.map(column => (
+                                    <th key={column.Index}>{column.Header}</th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr>
+                                    <td><label>
+                                        Login:
+                                        <input value={formData.login} type="text" name="login" onChange={handleChange} />
+                                    </label></td>
+                                    <td><label>
+                                        Password:
+                                        <input value={formData.password} name="password" type="password" onChange={handleChange} />
+                                    </label></td>
+                                    <td><label>
+                                        ConfirmPassword:
+                                        <input value={formData.confirmPassword} type="password" name="confirmPassword" onChange={handleChange} />
+                                    </label></td>
+                                   <td> <label>
+                                        RoleId:
+                                        <input value={formData.roleid} type="text" name="roleId" onChange={handleChange} />
+                                    </label>
+                                    </td>
+                                    <td><input type="submit" value="Submit" /></td>
+                                    
+                                </tr>
+                            
+                        </tbody>
+                    </table>
                     </form>
                 </div>
             </div>
