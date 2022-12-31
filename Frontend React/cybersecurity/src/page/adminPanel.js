@@ -16,8 +16,12 @@ const AdminPanel = () => {
 	const closeEditAdd = () => setIsEditAddOpen(!isEditAddOpen);
 
 	return (
+		<div>
 		<div className="admin-panel-content">
+			
 			<Logger /> <User />
+			
+		</div>
 		</div>
 	);
 };

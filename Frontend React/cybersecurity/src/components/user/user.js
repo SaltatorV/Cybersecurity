@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import * as MdIcons from 'react-icons/md';
 import { Link } from 'react-router-dom';
-
+import EditUserPanel from './EditUserPanel';
+import AddUserPanel from './AddUserPanel';
 const User = ({ showEditAdd, setFormFlag, setEditId }) => {
 	const [users, setUsers] = useState([]);
+	const [selectEditUser,setSelectEditUser] = useState('');
+	const [addUserOpenPanel,setAddUserOpenPanel] = useState(false);
 
 	const columns = [
 		{
@@ -75,21 +78,19 @@ const User = ({ showEditAdd, setFormFlag, setEditId }) => {
 		}
 	}, []);
 
-	const showWindowHandler = (flag, settingFlag, id) => {
-		showEditAdd(settingFlag);
-		setEditId(id);
-		setFormFlag(flag);
-	};
+	
 
 	return (
 		<div className="user-content">
+			
 			<div className="setting-tab">
 				<div className="setting-header">
 					User
-					<Link to="#" onClick={() => showWindowHandler('add', 'user')}>
+					<Link to="#" onClick={() => setAddUserOpenPanel(!addUserOpenPanel)}>
 						<MdIcons.MdOutlineAddBox />
 					</Link>
 				</div>
+				{(addUserOpenPanel===true)&&(<AddUserPanel  close={setAddUserOpenPanel.bind(this)}/>)}
 				<div className="scroll-section">
 					<table cellSpacing="0">
 						<thead>
@@ -114,7 +115,7 @@ const User = ({ showEditAdd, setFormFlag, setEditId }) => {
 									<td>{item.isOneTimePasswordSet ? 'tak' : 'nie'}</td>
 									<td className="td-edit">
 										<Link to="#">
-											<MdIcons.MdOutlineEditNote />
+											<MdIcons.MdOutlineEditNote onClick={()=>setSelectEditUser(item.id)}/>
 										</Link>
 									</td>
 								</tr>
@@ -124,6 +125,9 @@ const User = ({ showEditAdd, setFormFlag, setEditId }) => {
 				</div>
 				<div className="tab-footer"></div>
 			</div>
+			{(selectEditUser!=='')&&(<EditUserPanel id={selectEditUser} close={setSelectEditUser.bind(this)}/>)}
+			
+			
 		</div>
 	);
 };
