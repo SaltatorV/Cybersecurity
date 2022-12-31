@@ -297,6 +297,87 @@ namespace Cybersecurity.Services
             await Task.CompletedTask;
         }
 
+        public async Task ChangePassword(int id, ChangePasswordDto changePasswordDto)
+        {
+            var jwt = _accessor.HttpContext.Request.Cookies["jwt"];
+
+            if (jwt is null)
+            {
+                throw new CookieNotFoundException("Brak cookie");
+            }
+
+            var userId = await _authenticationService.GetIdFromClaim(jwt);
+
+            var existingUser = await _userRepository.GetByIdAsync(id);
+
+            var validationResult = _changePasswordDtoValidator.Validate(changePasswordDto);
+
+
+            if (existingUser is null)
+            {
+                await _logService.AddLog($"Zmiana hasła użytkownika {changePasswordDto.Login} nie udała się", "Zmiana hasła", userId);
+                throw new NotFoundException("Nie znaleziono użytkownika");
+            }
+
+            if (!validationResult.IsValid)
+            {
+                await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Zmiana hasła", userId);
+                throw new BadRequestException(validationResult.ToString());
+            }
+            PasswordVerificationResult existingUserOldPassword;
+            if (existingUser.IsOneTimePasswordSet)
+            {
+                existingUserOldPassword = _passwordHasher.VerifyHashedPassword(existingUser, existingUser.OneTimePassword, changePasswordDto.OldPassword);
+            }
+            else
+            {
+                existingUserOldPassword = _passwordHasher.VerifyHashedPassword(existingUser, existingUser.Password, changePasswordDto.OldPassword);
+            }
+
+            if (existingUserOldPassword == PasswordVerificationResult.Failed)
+            {
+                await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Zmiana hasła", userId);
+                throw new BadHttpRequestException("Nie poprawne stare hasło");
+            }
+
+            var oldPasswords = await _oldPasswordRepository.GetAllAsync();
+
+            foreach (var item in oldPasswords)
+            {
+                if (item.UserId == existingUser.Id)
+                {
+                    var oldPasswordVerification = _oldPasswordHasher.VerifyHashedPassword(item, item.Password, changePasswordDto.Password);
+
+                    if (oldPasswordVerification == PasswordVerificationResult.Success)
+                    {
+                        await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login} nie udała się", "Zmiana hasła", userId);
+                        throw new BadRequestException("Hasło było używane");
+                    }
+                }
+            }
+
+            var oldPassword = _mapper.Map<OldPassword>(changePasswordDto);
+            oldPassword.UserId = existingUser.Id;
+            var hashedOldPassword = _oldPasswordHasher.HashPassword(oldPassword, oldPassword.Password);
+
+            oldPassword.Password = hashedOldPassword;
+
+            var user = _mapper.Map(changePasswordDto, existingUser);
+
+            user.Password = _passwordHasher.HashPassword(user, user.Password);
+            user.IsPasswordExpire = false;
+            user.PasswordExpire = DateTime.UtcNow.AddDays(30);
+            user.IsOneTimePasswordSet = false;
+            user.OneTimePassword = "";
+
+            await _userRepository.UpdateAsync(user);
+            await _oldPasswordRepository.InsertAsync(oldPassword);
+            await _oldPasswordRepository.SaveAsync();
+            await _userRepository.SaveAsync();
+            await _logService.AddLog($"Zmiana hasła użytkownika {existingUser.Login}", "Zmiana hasła", userId);
+            await Task.CompletedTask;
+        }
+
         public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
             var users = await _userRepository.GetAllAsync();
